@@ -1,0 +1,6 @@
+**/node-modules
+**/dist
+**/.husky
+**/coverage
+.vscode
+package-lock.json
