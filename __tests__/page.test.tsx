@@ -1,12 +1,12 @@
 import { render } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
-import Page from '@/app/page';
+import Home from '@/app/page';
 
 describe('Page Component', () => {
   it('renders correctly with heading', async () => {
-    const { getByRole } = render(Page());
+    const { getByRole } = render(Home());
 
-    const heading = getByRole('heading', { name: /est\/graphiql client/i, level: 1 });
+    const heading = getByRole('heading', { name: /Welcome to Our API Client/i, level: 1 });
     expect(heading).toBeInTheDocument();
   });
 });
