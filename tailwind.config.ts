@@ -15,6 +15,9 @@ const config: Config = {
       colors: {
         'custom-gray': 'rgb(215, 215, 215)',
       },
+      maxWidth: {
+        '1440px': '1440px',
+      },
     },
   },
   plugins: [],

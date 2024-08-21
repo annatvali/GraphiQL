@@ -1,6 +1,6 @@
 function Footer() {
   return (
-    <footer className="flex justify-around items-center border-t-2 border-white w-full h-[70px]">
+    <footer className="flex justify-around items-center max-w-1440px mx-auto border-t-2 border-white w-full h-[70px]">
       <a
         href="https://github.com/your-profile"
         target="_blank"
