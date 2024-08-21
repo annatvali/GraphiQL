@@ -21,27 +21,6 @@ body {
   background: linear-gradient(45deg, rgb(183, 183, 183) 0%, rgb(186, 128, 217) 100%);
 }
 
-.links:hover {
-  color: rgb(215, 215, 215);
-}
-
-.main {
-  display: flex;
-  flex-direction: column;
-  padding: 10px;
-  flex: 1;
-}
-
-.title {
-  color: var(--foreground-rgb);
-  font-size: 45px;
-  font-weight: 500;
-}
-
-.buttons_main {
-  margin: 20px 0;
-}
-
 @layer utilities {
   .text-balance {
     text-wrap: balance;
