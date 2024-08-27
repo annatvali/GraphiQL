@@ -37,6 +37,9 @@ const config: Config = {
         '1440px': '1440px',
         '360': '360px',
       },
+      screens: {
+        'sm-max': { max: '768px' },
+      },
     },
   },
   plugins: [],
