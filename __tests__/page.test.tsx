@@ -1,11 +1,25 @@
 import { render } from '@testing-library/react';
-import { describe, it, expect } from 'vitest';
-import Home from '@/app/page';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { ReactNode } from 'react';
+import Main from '@/app/[locale]/page';
 
-describe('Home Component', () => {
-  it('renders without crashing and contains "About the project" heading', () => {
-    const { getByText } = render(<Home />);
-    const heading = getByText('About the project');
+describe('Main page', () => {
+  beforeEach(() => {
+    vi.mock('next-intl', () => ({
+      useTranslations: vi.fn().mockReturnValue((key: string) => key),
+    }));
+
+    vi.mock('@/app/components/AuthenticatedPage', () => {
+      return {
+        default: (): ReactNode => <h1>title</h1>,
+      };
+    });
+  });
+
+  it('renders correctly with heading', () => {
+    const { getByRole } = render(Main({}));
+
+    const heading = getByRole('heading', { name: 'title', level: 1 });
     expect(heading).toBeInTheDocument();
   });
 });
