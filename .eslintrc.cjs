@@ -48,7 +48,7 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['app/layout.tsx'],
+      files: ['app/*[locale]*/layout.tsx'],
       rules: {
         'react-refresh/only-export-components': 'off',
       },

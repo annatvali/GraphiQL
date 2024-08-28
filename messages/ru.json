@@ -1,0 +1,21 @@
+{
+  "MAIN": {
+    "title": "Добро пожаловать в наш API-клиент!",
+    "descr": "Мощный инструмент для тестирования и взаимодействия с вашими API."
+  },
+  "SIGN_IN": {
+    "title": "Войти"
+  },
+  "SIGN_UP": {
+    "title": "Зарегистрироваться"
+  },
+  "REST_CLIENT": {
+    "title": "RESTfull клиент"
+  },
+  "GRAPHI_CLIENT": {
+    "title": "GraphiQL клиент"
+  },
+  "HISTORY": {
+    "title": "История"
+  }
+}
