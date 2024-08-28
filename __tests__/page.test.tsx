@@ -1,12 +1,18 @@
 import { render } from '@testing-library/react';
-import { describe, it, expect } from 'vitest';
-import Home from '@/app/page';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import Main from '@/app/[locale]/page';
 
 describe('Page Component', () => {
-  it('renders correctly with heading', async () => {
-    const { getByRole } = render(Home());
+  beforeEach(() => {
+    vi.mock('next-intl', () => ({
+      useTranslations: vi.fn().mockReturnValue((key: string) => key),
+    }));
+  });
 
-    const heading = getByRole('heading', { name: /Welcome to Our API Client/i, level: 1 });
+  it('renders correctly with heading', () => {
+    const { getByRole } = render(Main());
+
+    const heading = getByRole('heading', { name: 'title', level: 1 });
     expect(heading).toBeInTheDocument();
   });
 });
