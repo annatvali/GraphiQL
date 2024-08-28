@@ -1,4 +1,4 @@
-function Header() {
+const Header = () => {
   return (
     <header className="flex justify-between max-w-1440px mx-auto items-center w-full h-[70px] border-b-2 border-white px-2.5">
       <div className="text-xl">API Nexus</div>
@@ -15,6 +15,6 @@ function Header() {
       </div>
     </header>
   );
-}
+};
 
 export default Header;
