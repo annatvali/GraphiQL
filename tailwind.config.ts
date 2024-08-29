@@ -37,6 +37,12 @@ const config: Config = {
         '1440px': '1440px',
         '360': '360px',
       },
+      fontSize: {
+        '6xl': '65px',
+      },
+      boxShadow: {
+        'custom-light': '0 0 20px -6px rgba(255, 255, 255, 0.82)',
+      },
       screens: {
         'sm-max': { max: '768px' },
       },
