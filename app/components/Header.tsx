@@ -1,69 +1,47 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import clsx from 'clsx';
-import Button from './Button';
 import Link from 'next/link';
-import LanguageSwitcher from './LanguageSwitcher';
+import HeaderActions from './HeaderActions';
+import BurgerMenu from './BurgerMenu';
+import MenuButton from './MenuButton';
+import useStickyHeader from '../hooks/useStickyHeader';
 
 const Header: React.FC = () => {
-  const [isSticky, setIsSticky] = useState<boolean>(false);
-  const [isMenuOpen, setMenuOpen] = useState(false);
-  const [isClient, setIsClient] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const isSticky = useStickyHeader();
 
-  useEffect(() => {
-    setIsClient(true);
+  const toggleMenu = (): void => {
+    setIsMenuOpen(!isMenuOpen);
+  };
 
-    const handleScroll = () => {
-      setIsSticky(window.scrollY > 0);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
-
-  if (!isClient) {
-    return null;
-  }
+  const closeMenu = (): void => {
+    setIsMenuOpen(false);
+  };
 
   return (
     <header
-      className={clsx(
-        'bg-gray-100 fixed top-0 left-0 w-full px-2 md:px-4 z-50 bg-white shadow-md transition-all duration-300',
-        {
-          'h-20': isSticky,
-          'h-24': !isSticky,
-        }
-      )}
+      className={clsx('fixed top-0 z-50 w-full transition-all', {
+        'bg-purple-600 py-2 shadow-lg dark:bg-gray-800': isSticky,
+        'bg-purple-400 py-4': !isSticky,
+      })}
     >
-      <div
-        className={clsx('container flex items-center justify-between transition-all duration-300', {
-          'py-2': isSticky,
-          'py-4': !isSticky,
-        })}
-      >
+      <div className="container mx-auto flex items-baseline justify-between px-4 md:px-6 lg:px-8">
         <Link
           href="/"
-          className="relative inline-block transition-all text-2xl font-extrabold text-black mt-4 pb-2 before:content-[''] before:block before:w-0 before:h-1.5 before:bg-black before:transition-all before:duration-300 before:absolute before:bottom-0 before:left-0 hover:before:w-full before:skew-x-12 after:content-[''] after:block after:w-0 after:h-0 after:bg-black after:transition-all after:duration-300 after:absolute after:top-0 after:right-0 hover:after:w-1.5 hover:after:h-1.5 hover:after:rotate-45 hover:after:right-[86px] hover:text-purple-600"
+          className="relative inline-block transition-all text-2xl font-extrabold text-white mt-4 pb-2 before:content-[''] before:block before:w-0 before:h-1.5 before:bg-white before:transition-all before:duration-300 before:absolute before:bottom-0 before:left-0 hover:before:w-full before:skew-x-12 after:content-[''] after:block after:w-0 after:h-0 after:bg-white after:transition-all after:duration-300 after:absolute after:top-0 after:right-0 hover:after:w-1.5 hover:after:h-1.5 hover:after:rotate-45 hover:after:right-[86px]"
         >
           API Nexus
         </Link>
-        <div className="hidden md:flex items-center space-x-6">
-          <LanguageSwitcher />
-          <div className="pt-4">
-            <Button variant="primary" onClick={() => console.log('Sign Out button clicked!')} aria-label="Sign Out">
-              Sign in
-            </Button>
-          </div>
-        </div>
-        <div className="md:hidden md:pt-0 pt-4">
-          <Button variant="secondary" onClick={() => setMenuOpen(!isMenuOpen)} aria-label="Toggle Menu">
-            {isMenuOpen ? '✖' : '☰'}
-          </Button>
+        <nav className="hidden space-x-4 md:flex">
+          <HeaderActions isMenuOpen={false} />
+        </nav>
+        <div className="md:hidden">
+          <MenuButton isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
         </div>
       </div>
+      <BurgerMenu isMenuOpen={isMenuOpen} closeMenu={closeMenu} />
     </header>
   );
 };
