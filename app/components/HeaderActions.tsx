@@ -10,10 +10,10 @@ const HeaderActions: React.FC<HeaderActionsProps> = ({ isMenuOpen }) => {
   return (
     <div className={`flex gap-6 ${isMenuOpen ? 'flex-col items-start' : 'flex-row items-center'}`}>
       <LanguageSwitcher className={isMenuOpen ? 'flex self-center' : ''} />
-      <Button href={'/sign-in'} className={isMenuOpen ? 'w-full' : ''}>
+      <Button href={'/login'} className={isMenuOpen ? 'w-full' : ''}>
         Sign In
       </Button>
-      <Button href={'/sign-up'} className={isMenuOpen ? 'w-full' : ''}>
+      <Button href={'/register'} className={isMenuOpen ? 'w-full' : ''}>
         Sign Up
       </Button>
     </div>
