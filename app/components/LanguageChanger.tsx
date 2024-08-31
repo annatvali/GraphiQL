@@ -17,7 +17,7 @@ const LanguageChanger = ({ locale }: LanguageChangerProps): React.ReactNode => {
   };
 
   return (
-    <Dropdown initialValue={locale} className="capitalize">
+    <Dropdown initialValue={localeNames[locale]} currentLanguage={localeNames[locale]} className="capitalize">
       {locales.map((localeItem) => (
         <DropdownItem key={localeItem} label={localeNames[localeItem]} onClick={() => handleChange(localeItem)} />
       ))}
