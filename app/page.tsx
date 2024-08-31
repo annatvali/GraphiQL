@@ -1,20 +1,13 @@
 import React from 'react';
 import Image from 'next/image';
-import Button from './components/Button';
+import AuthenticatedPage from './components/AuthenticatedPage';
 import TeamMemberCard from './components/TeamMemberCard';
 import { teamMembers } from './data/teamMembers';
 
 const Home: React.FC = () => {
   return (
     <div className="flex flex-col max-w-screen-xl px-4 mx-auto mt-10">
-      <section className="flex flex-col min-h-600 mt-10 bg-[url('../public/cloud.png')] bg-no-repeat bg-custom-size bg-right sm-max:bg-[url('../public/lins.png')]">
-        <h1 className="color-white text-6xl font-medium">Welcome to API Nexus</h1>
-        <p className="my-2 text-lg">A powerful tool for testing and interacting with your APIs.</p>
-        <div className="flex gap-4 my-8">
-          <Button>Sign In</Button>
-          <Button>Sign Up</Button>
-        </div>
-      </section>
+      <AuthenticatedPage />
       <section className="flex flex-col min-h-600 mt-8 pb-10 ">
         <h2 className="text-6xl text-center font-semibold">About the project</h2>
         <div className="flex flex-wrap gap-10 items-center justify-around mt-32">
