@@ -2,8 +2,8 @@ import React from 'react';
 
 const GraphiQLClientPage: React.FC = () => {
   return (
-    <div>
-      <h1>GraphiQL Client</h1>
+    <div className="flex flex-col max-w-screen-xl px-4 mx-auto h-[86vh]">
+      <h1 className="color-white text-6xl font-medium">GraphiQL Client</h1>
       <p>Content for GraphiQL Client goes here.</p>
     </div>
   );
