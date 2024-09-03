@@ -23,11 +23,11 @@ const Header: React.FC = () => {
   return (
     <header
       className={clsx('fixed top-0 z-50 w-full transition-all', {
-        'bg-purple-600 py-2 shadow-lg dark:bg-gray-800': isSticky,
-        'bg-purple-400 py-4': !isSticky,
+        'bg-custom-purple opacity-90 py-2 shadow-lg dark:bg-gray-800': isSticky,
+        'py-4 border-b-2 border-white': !isSticky,
       })}
     >
-      <div className="container mx-auto flex items-baseline justify-between px-4 md:px-6 lg:px-8">
+      <div className="container max-w-screen-xl mx-auto flex items-baseline justify-between px-4 md:px-6 lg:px-8">
         <Link
           href="/"
           className="relative inline-block transition-all text-2xl font-extrabold text-white mt-4 pb-2 before:content-[''] before:block before:w-0 before:h-1.5 before:bg-white before:transition-all before:duration-300 before:absolute before:bottom-0 before:left-0 hover:before:w-full before:skew-x-12 after:content-[''] after:block after:w-0 after:h-0 after:bg-white after:transition-all after:duration-300 after:absolute after:top-0 after:right-0 hover:after:w-1.5 hover:after:h-1.5 hover:after:rotate-45 hover:after:right-[86px]"
