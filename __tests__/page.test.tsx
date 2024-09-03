@@ -1,12 +1,11 @@
 import { render } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
-import Page from '@/app/page';
+import Home from '@/app/page';
 
-describe('Page Component', () => {
-  it('renders correctly with heading', async () => {
-    const { getByRole } = render(Page());
-
-    const heading = getByRole('heading', { name: /est\/graphiql client/i, level: 1 });
+describe('Home Component', () => {
+  it('renders without crashing and contains "About the project" heading', () => {
+    const { getByText } = render(<Home />);
+    const heading = getByText('About the project');
     expect(heading).toBeInTheDocument();
   });
 });
