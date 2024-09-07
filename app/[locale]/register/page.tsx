@@ -1,6 +1,7 @@
 import { useTranslations } from 'next-intl';
 import FormLayout from '@/app/components/FormLayout';
 import FormField from '@/app/components/FormField';
+import { PATH } from '@/constants';
 
 const Register = () => {
   const t = useTranslations('SIGN_UP');
@@ -9,9 +10,9 @@ const Register = () => {
     <FormLayout
       title={t('title')}
       buttonText={t('signup_btn')}
-      buttonHref="/"
+      buttonHref={PATH.MAIN}
       linkText={t('signin_link')}
-      linkHref="/login"
+      linkHref={PATH.LOGIN}
       linkDescription={t('descr')}
     >
       <FormField

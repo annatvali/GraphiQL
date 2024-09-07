@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl';
 import LanguageChanger from './LanguageChanger';
 import ButtonLink from './ButtonLink';
 import PropTypes from 'prop-types';
+import { PATH } from '@/constants';
 
 interface HeaderActionsProps {
   isMenuOpen: boolean;
@@ -16,10 +17,10 @@ const HeaderActions: React.FC<HeaderActionsProps> = ({ isMenuOpen, closeMenu }) 
 
   return (
     <div className={`flex gap-6 ${isMenuOpen ? 'flex-col items-start' : 'flex-row items-center'}`}>
-      <ButtonLink href={'/login'} className={isMenuOpen ? 'w-full' : ''} onClick={closeMenu}>
+      <ButtonLink href={PATH.LOGIN} className={isMenuOpen ? 'w-full' : ''} onClick={closeMenu}>
         {t('signin')}
       </ButtonLink>
-      <ButtonLink href={'/register'} className={isMenuOpen ? 'w-full' : ''} onClick={closeMenu}>
+      <ButtonLink href={PATH.REGISTER} className={isMenuOpen ? 'w-full' : ''} onClick={closeMenu}>
         {t('signup')}
       </ButtonLink>
       <LanguageChanger locale={locale} closeMenu={closeMenu} className={isMenuOpen ? 'flex self-center' : ''} />

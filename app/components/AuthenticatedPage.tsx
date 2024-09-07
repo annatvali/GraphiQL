@@ -1,6 +1,7 @@
 import React from 'react';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/navigation';
+import { PATH } from '@/constants';
 
 const AuthenticatedPage: React.FC = () => {
   const t = useTranslations('MAIN_AUTH');
@@ -13,13 +14,13 @@ const AuthenticatedPage: React.FC = () => {
     <section className="flex flex-col min-h-600 mt-10 bg-[url('../public/booble.png')] bg-no-repeat bg-bottom bg-contain sm-max:bg-[url('../public/booble-adapt.png')]">
       <h1 className="color-white text-6xl font-medium">{`${t('greeting')}${username}!`}</h1>
       <div className="flex gap-4 my-8">
-        <Link className={style} href="/rest-client">
+        <Link className={style} href={PATH.RESTFULL_CLIENT}>
           {t('restfull_link')}
         </Link>
-        <Link className={style} href="/graphiql-client">
+        <Link className={style} href={PATH.GRAPHIQL_CLIENT}>
           {t('graphiql_link')}
         </Link>
-        <Link className={style} href="/history">
+        <Link className={style} href={PATH.HISTORY}>
           {t('history_link')}
         </Link>
       </div>
