@@ -19,7 +19,7 @@ const Register = () => {
         type="text"
         name="first-name"
         id="first-name"
-        placeholder="First Name"
+        placeholder={t('fname_label')}
         required
       />
       <FormField
@@ -27,7 +27,7 @@ const Register = () => {
         type="text"
         name="last-name"
         id="last-name"
-        placeholder="Last Name"
+        placeholder={t('lname_label')}
         required
       />
       <FormField
