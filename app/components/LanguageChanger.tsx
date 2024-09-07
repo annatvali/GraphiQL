@@ -6,9 +6,10 @@ import { Dropdown, DropdownItem } from './Dropdown';
 
 interface LanguageChangerProps {
   locale: Locale;
+  className?: string;
 }
 
-const LanguageChanger = ({ locale }: LanguageChangerProps): React.ReactNode => {
+const LanguageChanger = ({ locale, className }: LanguageChangerProps): React.ReactNode => {
   const router = useRouter();
   const pathname = usePathname();
 
@@ -17,7 +18,11 @@ const LanguageChanger = ({ locale }: LanguageChangerProps): React.ReactNode => {
   };
 
   return (
-    <Dropdown initialValue={localeNames[locale]} currentLanguage={localeNames[locale]} className="capitalize">
+    <Dropdown
+      initialValue={localeNames[locale]}
+      currentLanguage={localeNames[locale]}
+      className={`capitalize ${className ?? ''}`}
+    >
       {locales.map((localeItem) => (
         <DropdownItem key={localeItem} label={localeNames[localeItem]} onClick={() => handleChange(localeItem)} />
       ))}
