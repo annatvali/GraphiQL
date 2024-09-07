@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslations } from 'next-intl';
-import Button from './Button';
+import ButtonLink from './ButtonLink';
 
 const UnauthenticatedPage: React.FC = () => {
   const t = useTranslations('MAIN_UNAUTH');
@@ -10,8 +10,8 @@ const UnauthenticatedPage: React.FC = () => {
       <h1 className="color-white text-6xl font-medium">{t('greeting')}</h1>
       <p className="my-2 text-lg">{t('descr')}</p>
       <div className="flex gap-4 my-8">
-        <Button href={'/login'}>{t('signin_link')}</Button>
-        <Button href={'/register'}>{t('signup_link')}</Button>
+        <ButtonLink href={'/login'}>{t('signin_link')}</ButtonLink>
+        <ButtonLink href={'/register'}>{t('signup_link')}</ButtonLink>
       </div>
     </section>
   );

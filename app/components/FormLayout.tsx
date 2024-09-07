@@ -1,5 +1,5 @@
 import React from 'react';
-import Button from './Button';
+import ButtonLink from './ButtonLink';
 import { Link } from '@/navigation';
 
 interface FormLayoutProps {
@@ -28,12 +28,12 @@ const FormLayout: React.FC<FormLayoutProps> = ({
           <h1 className="text-3xl text-center font-bold text-gray-900 dark:text-white text-custom-purple">{title}</h1>
           <form className="space-y-6" action="#">
             {children}
-            <Button
+            <ButtonLink
               className="w-full font-semibold bg-custom-purple hover:text-custom-purple hover:border-2 hover:border-custom-purple"
               href={`/${buttonHref}`}
             >
               {buttonText}
-            </Button>
+            </ButtonLink>
             <p className="text-sm font-light text-gray-500 dark:text-gray-400">
               {linkDescription}{' '}
               <Link href={linkHref} className="font-medium text-primary-600 hover:underline dark:text-primary-500">

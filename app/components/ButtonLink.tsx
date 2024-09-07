@@ -1,14 +1,14 @@
 import { Link } from '@/navigation';
 import React from 'react';
 
-interface ButtonProps {
+interface ButtonLinkProps {
   href: string;
   onClick?: () => void;
   children: React.ReactNode;
   className?: string;
 }
 
-const Button: React.FC<ButtonProps> = ({ href, onClick, children, className }) => {
+const ButtonLink: React.FC<ButtonLinkProps> = ({ href, onClick, children, className }) => {
   return (
     <Link
       href={href}
@@ -20,4 +20,4 @@ const Button: React.FC<ButtonProps> = ({ href, onClick, children, className }) =
   );
 };
 
-export default Button;
+export default ButtonLink;

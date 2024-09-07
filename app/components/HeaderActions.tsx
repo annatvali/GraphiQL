@@ -1,6 +1,6 @@
 import { useTranslations } from 'next-intl';
 import LanguageSwitcher from './LanguageSwitcher';
-import Button from './Button';
+import ButtonLink from './ButtonLink';
 import PropTypes from 'prop-types';
 
 interface HeaderActionsProps {
@@ -13,12 +13,12 @@ const HeaderActions: React.FC<HeaderActionsProps> = ({ isMenuOpen }) => {
   return (
     <div className={`flex gap-6 ${isMenuOpen ? 'flex-col items-start' : 'flex-row items-center'}`}>
       <LanguageSwitcher className={isMenuOpen ? 'flex self-center' : ''} />
-      <Button href={'/login'} className={isMenuOpen ? 'w-full' : ''}>
+      <ButtonLink href={'/login'} className={isMenuOpen ? 'w-full' : ''}>
         {t('signin')}
-      </Button>
-      <Button href={'/register'} className={isMenuOpen ? 'w-full' : ''}>
+      </ButtonLink>
+      <ButtonLink href={'/register'} className={isMenuOpen ? 'w-full' : ''}>
         {t('signup')}
-      </Button>
+      </ButtonLink>
     </div>
   );
 };
