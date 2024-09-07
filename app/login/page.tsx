@@ -1,17 +1,27 @@
-import FormLayout from '../components/FormLayout';
-import FormField from '../components/FormField';
+import { useTranslations } from 'next-intl';
+import FormLayout from '@/app/components/FormLayout';
+import FormField from '@/app/components/FormField';
 
 const Login = () => {
+  const t = useTranslations('SIGN_IN');
+
   return (
     <FormLayout
-      title="Sign in to your account"
-      buttonText="Sign in"
-      linkText="Sign up"
+      title={t('title')}
+      buttonText={t('signin_btn')}
+      linkText={t('signup_link')}
       linkHref="/register"
-      linkDescription="Don’t have an account yet?"
+      linkDescription={t('descr')}
     >
-      <FormField label="Email" type="email" name="email" id="email" placeholder="name@example.com" required />
-      <FormField label="Password" type="password" name="password" id="password" placeholder="••••••••" required />
+      <FormField
+        label={t('email_label')}
+        type="email"
+        name="email"
+        id="email"
+        placeholder="name@example.com"
+        required
+      />
+      <FormField label={t('psw_label')} type="password" name="password" id="password" placeholder="••••••••" required />
       <div className="flex items-center justify-between">
         <div className="flex items-start">
           <div className="flex items-center h-5">
@@ -24,12 +34,12 @@ const Login = () => {
           </div>
           <div className="ml-3 text-sm">
             <label htmlFor="remember" className="text-gray-500 dark:text-gray-300">
-              Remember me
+              {t('remember_label')}
             </label>
           </div>
         </div>
         <a href="#" className="text-sm font-medium text-gray-500 dark:text-gray-300 hover:underline">
-          Forgot password?
+          {t('forgot_psw')}
         </a>
       </div>
     </FormLayout>

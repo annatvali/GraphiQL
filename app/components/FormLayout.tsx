@@ -1,6 +1,6 @@
 import React from 'react';
 import Button from './Button';
-import Link from 'next/link';
+import { Link } from '@/navigation';
 
 interface FormLayoutProps {
   title: string;

@@ -1,5 +1,5 @@
 import GitHub from './GitHub';
-import Link from 'next/link';
+import { Link } from '@/navigation';
 
 const Footer = () => {
   return (

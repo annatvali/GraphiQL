@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import clsx from 'clsx';
-import Link from 'next/link';
+import { Link } from '@/navigation';
 import HeaderActions from './HeaderActions';
 import BurgerMenu from './BurgerMenu';
 import MenuButton from './MenuButton';
