@@ -29,8 +29,8 @@ const FormLayout: React.FC<FormLayoutProps> = ({
           <form className="space-y-6" action="#">
             {children}
             <ButtonLink
-              className="w-full font-semibold bg-custom-purple hover:text-custom-purple hover:border-2 hover:border-custom-purple"
-              href={`/${buttonHref}`}
+              className="w-full block font-semibold bg-custom-purple border-2 border-transparent hover:text-custom-purple hover:border-custom-purple hover:bg-purple-50"
+              href={buttonHref}
             >
               {buttonText}
             </ButtonLink>
