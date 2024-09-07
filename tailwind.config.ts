@@ -10,6 +10,7 @@ const config: Config = {
     extend: {
       width: {
         '250': '250px',
+        '275': '275px',
         '300': '300px',
         '320': '320px',
       },
