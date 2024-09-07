@@ -6,6 +6,7 @@ interface FormLayoutProps {
   title: string;
   children: React.ReactNode;
   buttonText: string;
+  buttonHref: string;
   linkText: string;
   linkHref: string;
   linkDescription: string;
@@ -15,6 +16,7 @@ const FormLayout: React.FC<FormLayoutProps> = ({
   title,
   children,
   buttonText,
+  buttonHref,
   linkText,
   linkHref,
   linkDescription,
@@ -28,7 +30,7 @@ const FormLayout: React.FC<FormLayoutProps> = ({
             {children}
             <Button
               className="w-full font-semibold bg-custom-purple hover:text-custom-purple hover:border-2 hover:border-custom-purple"
-              href={'/{buttonText}'}
+              href={`/${buttonHref}`}
             >
               {buttonText}
             </Button>

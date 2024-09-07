@@ -9,6 +9,7 @@ const Login = () => {
     <FormLayout
       title={t('title')}
       buttonText={t('signin_btn')}
+      buttonHref="/"
       linkText={t('signup_link')}
       linkHref="/register"
       linkDescription={t('descr')}
