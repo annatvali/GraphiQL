@@ -1,0 +1,31 @@
+{
+  "MAIN": {
+    "project_title": "About the project",
+    "project": "API Nexus is an intuitive tool that allows you to easily test and interact with your APIs. Our application provides a user-friendly interface for sending requests, viewing responses, and managing APIs.",
+    "team_title": "Our team",
+    "course_title": "About the course",
+    "course_1": "This project is part of the ReactJS course from RS School",
+    "course_2": ". The course covers all the key aspects of React application development and helps students apply the acquired knowledge in practice through real projects",
+    "course_link": " ReactJS from RS School"
+  },
+  "SIGN_IN": {
+    "title": "Sign In"
+  },
+  "SIGN_UP": {
+    "title": "Sign Up"
+  },
+  "REST_CLIENT": {
+    "title": "RESTfull Client"
+  },
+  "GRAPHI_CLIENT": {
+    "title": "GraphiQL Client"
+  },
+  "HISTORY": {
+    "title": "History"
+  },
+  "NOT_FOUND": {
+    "title": "404 - Not Found",
+    "message": "Sorry, we couldn`t find the page you were looking for.",
+    "link_to_main": "Go to main page"
+  }
+}

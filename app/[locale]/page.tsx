@@ -1,8 +1,8 @@
 import React from 'react';
 import Image from 'next/image';
-import AuthenticatedPage from './components/AuthenticatedPage';
-import TeamMemberCard from './components/TeamMemberCard';
-import { teamMembers } from './data/teamMembers';
+import AuthenticatedPage from '@/app/components/AuthenticatedPage';
+import TeamMemberCard from '@/app/components/TeamMemberCard';
+import { teamMembers } from '@/app/data/teamMembers';
 
 const Home: React.FC = () => {
   return (
