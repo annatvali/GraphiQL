@@ -22,7 +22,7 @@ const Header: React.FC = () => {
 
   return (
     <header
-      className={clsx('fixed top-0 z-50 w-full transition-all', {
+      className={clsx('fixed top-0 z-50 w-full transition-all min-h-23', {
         'bg-custom-purple opacity-90 py-2 shadow-lg dark:bg-gray-800': isSticky,
         'py-4 border-b-2 border-white': !isSticky,
       })}

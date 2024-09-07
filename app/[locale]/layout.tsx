@@ -27,7 +27,7 @@ export default async function LocaleLayout({
       <body className={openSans.className}>
         <NextIntlClientProvider messages={messages}>
           <Header />
-          <main>{children}</main>
+          <main className="mt-23">{children}</main>
           <Footer />
         </NextIntlClientProvider>
       </body>

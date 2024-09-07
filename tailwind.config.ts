@@ -20,7 +20,11 @@ const config: Config = {
         '600': '600px',
       },
       minHeight: {
+        '23': '5.75rem',
         '600': '600px',
+      },
+      margin: {
+        '23': '5.75rem',
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',

@@ -9,7 +9,7 @@ const Home: React.FC = () => {
   const t = useTranslations('MAIN');
 
   return (
-    <div className="flex flex-col max-w-screen-xl px-4 mx-auto mt-32">
+    <div className="flex flex-col max-w-screen-xl px-4 mx-auto pt-6">
       <AuthenticatedPage />
       <section className="flex flex-col min-h-600 mt-8 pb-10 ">
         <h2 className="text-6xl text-center font-semibold">{t('project_title')}</h2>

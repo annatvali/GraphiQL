@@ -2,7 +2,7 @@
 
 const Loading = (): React.ReactNode => {
   return (
-    <div role="status" className="flex flex-col justify-center items-center max-w-screen-xl px-4 mx-auto mt-40">
+    <div role="status" className="flex flex-col justify-center items-center max-w-screen-xl px-4 mx-auto pt-16">
       <svg
         role="img"
         aria-hidden="true"
