@@ -7,14 +7,16 @@ import { Dropdown, DropdownItem } from './Dropdown';
 interface LanguageChangerProps {
   locale: Locale;
   className?: string;
+  closeMenu: () => void;
 }
 
-const LanguageChanger = ({ locale, className }: LanguageChangerProps): React.ReactNode => {
+const LanguageChanger = ({ locale, className, closeMenu }: LanguageChangerProps): React.ReactNode => {
   const router = useRouter();
   const pathname = usePathname();
 
   const handleChange = (newLocale: Locale) => {
     router.push(pathname, { locale: newLocale });
+    closeMenu();
   };
 
   return (

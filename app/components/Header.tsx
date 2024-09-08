@@ -35,7 +35,7 @@ const Header: React.FC = () => {
           API Nexus
         </Link>
         <nav className="hidden space-x-4 md:flex">
-          <HeaderActions isMenuOpen={false} />
+          <HeaderActions isMenuOpen={false} closeMenu={closeMenu} />
         </nav>
         <div className="md:hidden">
           <MenuButton isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />

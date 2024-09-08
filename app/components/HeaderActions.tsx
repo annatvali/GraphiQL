@@ -7,27 +7,29 @@ import PropTypes from 'prop-types';
 
 interface HeaderActionsProps {
   isMenuOpen: boolean;
+  closeMenu: () => void;
 }
 
-const HeaderActions: React.FC<HeaderActionsProps> = ({ isMenuOpen }) => {
+const HeaderActions: React.FC<HeaderActionsProps> = ({ isMenuOpen, closeMenu }) => {
   const locale = useLocale() as Locale;
   const t = useTranslations('HEADER');
 
   return (
     <div className={`flex gap-6 ${isMenuOpen ? 'flex-col items-start' : 'flex-row items-center'}`}>
-      <LanguageChanger locale={locale} className={isMenuOpen ? 'flex self-center' : ''} />
-      <ButtonLink href={'/login'} className={isMenuOpen ? 'w-full' : ''}>
+      <ButtonLink href={'/login'} className={isMenuOpen ? 'w-full' : ''} onClick={closeMenu}>
         {t('signin')}
       </ButtonLink>
-      <ButtonLink href={'/register'} className={isMenuOpen ? 'w-full' : ''}>
+      <ButtonLink href={'/register'} className={isMenuOpen ? 'w-full' : ''} onClick={closeMenu}>
         {t('signup')}
       </ButtonLink>
+      <LanguageChanger locale={locale} closeMenu={closeMenu} className={isMenuOpen ? 'flex self-center' : ''} />
     </div>
   );
 };
 
 HeaderActions.propTypes = {
   isMenuOpen: PropTypes.bool.isRequired,
+  closeMenu: PropTypes.func.isRequired,
 };
 
 export default HeaderActions;
