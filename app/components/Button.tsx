@@ -1,22 +1,16 @@
-import Link from 'next/link';
-import React from 'react';
-
-interface ButtonProps {
-  href: string;
-  onClick?: () => void;
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
-  className?: string;
 }
 
-const Button: React.FC<ButtonProps> = ({ href, onClick, children, className }) => {
+const Button = ({ children, className, ...attributes }: ButtonProps): React.ReactNode => {
   return (
-    <Link
-      href={href}
-      onClick={onClick}
-      className={`bg-white/30 hover:bg-white/40 active:shadow-none text-[white] shadow-custom-light text-center font-light text-xl p-2.5 rounded-[20px] ${className}`}
+    <button
+      type="button"
+      {...attributes}
+      className={`bg-white/30 hover:bg-white/40 active:shadow-none text-white shadow-[0px_0px_20px_-6px_rgba(255,255,255,0.82)] font-light text-xl p-2.5 rounded-[20px] ${className ?? ''}`}
     >
       {children}
-    </Link>
+    </button>
   );
 };
 

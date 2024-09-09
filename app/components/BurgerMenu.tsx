@@ -24,9 +24,10 @@ const BurgerMenu: React.FC<BurgerMenuProps> = ({ isMenuOpen, closeMenu }) => {
             'translate-x-full transform': !isMenuOpen,
           }
         )}
+        onClick={(e) => e.stopPropagation()}
       >
         <nav className="mt-16 flex flex-col space-y-4">
-          <HeaderActions isMenuOpen={isMenuOpen} />
+          <HeaderActions isMenuOpen={isMenuOpen} closeMenu={closeMenu} />
         </nav>
       </div>
     </div>

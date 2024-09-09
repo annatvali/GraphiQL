@@ -1,0 +1,79 @@
+{
+  "HEADER": {
+    "signin": "Sign In",
+    "signup": "Sign Up"
+  },
+  "MAIN_AUTH": {
+    "greeting": "Welcome Back, ",
+    "restfull_link": "REST Client",
+    "graphiql_link": "GraphiQL Client",
+    "history_link": "History"
+  },
+  "MAIN_UNAUTH": {
+    "greeting": "Welcome to API Nexus",
+    "descr": "A powerful tool for testing and interacting with your APIs.",
+    "signin_link": "Sign In",
+    "signup_link": "Sign Up"
+  },
+  "MAIN": {
+    "project_title": "About the project",
+    "project": "API Nexus is an intuitive tool that allows you to easily test and interact with your APIs. Our application provides a user-friendly interface for sending requests, viewing responses, and managing APIs.",
+    "team_title": "Our team",
+    "course_title": "About the course",
+    "course_1": "This project is part of the ReactJS course from RS School",
+    "course_2": ". The course covers all the key aspects of React application development and helps students apply the acquired knowledge in practice through real projects",
+    "course_link": " ReactJS from RS School"
+  },
+  "SIGN_IN": {
+    "title": "Sign in to your account",
+    "signin_btn": "Sign in",
+    "signup_link": "Sign up",
+    "descr": "Don’t have an account yet?",
+    "email_label": "Email",
+    "psw_label": "Password",
+    "remember_label": "Remember me",
+    "forgot_psw": "Forgot password?"
+  },
+  "SIGN_UP": {
+    "title": "Sign up for an account",
+    "signup_btn": "Sign up",
+    "signin_link": "Sign in",
+    "descr": "Already have an account?",
+    "fname_label": "First Name",
+    "lname_label": "Last Name",
+    "email_label": "Email",
+    "psw_label": "Password",
+    "confirm_psw_label": "Confirm Password"
+  },
+  "REST_CLIENT": {
+    "title": "RESTfull Client"
+  },
+  "GRAPHI_CLIENT": {
+    "title": "GraphiQL Client"
+  },
+  "HISTORY": {
+    "title": "History"
+  },
+  "NOT_FOUND": {
+    "title": "404 - Not Found",
+    "message": "Sorry, we couldn`t find the page you were looking for.",
+    "link_to_main": "Go to main page"
+  },
+  "TEAM": {
+    "valeriya": {
+      "name": "Valeriya Tikhonova",
+      "role": "Front-end Developer",
+      "bio": "My name is Valeria and I am a beginner frontend developer who strives to create beautiful and functional web applications. I am passionate about web development and constantly develop my skills in working with modern technologies. At the moment, I am actively studying: HTML, CSS, JavaScript and React. I am always open to new challenges and opportunities to grow as a developer and bring value to the team."
+    },
+    "ana": {
+      "name": "Ana Tvaliashvili",
+      "role": "Team Lead / Front-end Developer",
+      "bio": "Greetings! I am a motivated tech enthusiast transitioning into a career in technology, currently enrolled in courses at RSSchool in front-end development and AWS Cloud Developer training. With a strong commitment to self-development, I am eager to leverage my skills and knowledge in tech to drive innovative solutions and contribute to impactful projects."
+    },
+    "alex": {
+      "name": "Alexandra Paramonova",
+      "role": "Front-end Developer",
+      "bio": "Hi! I am a beginner front-end developer with a keen interest in building engaging and user-friendly web applications. I&apos;m excited to apply my skills to real-world projects, collaborate with others and take on new challenges in the field. I&apos;m grateful for the opportunity to learn from RS School, which has given me a strong foundation in HTML, CSS, and JavaScript!"
+    }
+  }
+}

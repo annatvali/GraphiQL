@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import clsx from 'clsx';
-import Link from 'next/link';
+import { Link } from '@/navigation';
 import HeaderActions from './HeaderActions';
 import BurgerMenu from './BurgerMenu';
 import MenuButton from './MenuButton';
@@ -22,7 +22,7 @@ const Header: React.FC = () => {
 
   return (
     <header
-      className={clsx('fixed top-0 z-50 w-full transition-all', {
+      className={clsx('fixed top-0 z-50 w-full transition-all min-h-23', {
         'bg-custom-purple opacity-90 py-2 shadow-lg dark:bg-gray-800': isSticky,
         'py-4 border-b-2 border-white': !isSticky,
       })}
@@ -35,7 +35,7 @@ const Header: React.FC = () => {
           API Nexus
         </Link>
         <nav className="hidden space-x-4 md:flex">
-          <HeaderActions isMenuOpen={false} />
+          <HeaderActions isMenuOpen={false} closeMenu={closeMenu} />
         </nav>
         <div className="md:hidden">
           <MenuButton isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
