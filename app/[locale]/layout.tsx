@@ -9,7 +9,7 @@ import '@/app/globals.css';
 const openSans = Open_Sans({ subsets: ['latin', 'cyrillic'] });
 
 export const metadata: Metadata = {
-  title: 'REST/GraphiQL Client',
+  title: 'RESTful/GraphQL Client',
   description: 'A lightweight REST/GraphQL client for seamless API interactions',
 };
 
