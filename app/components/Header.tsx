@@ -6,7 +6,7 @@ import { Link } from '@/navigation';
 import HeaderActions from './HeaderActions';
 import BurgerMenu from './BurgerMenu';
 import MenuButton from './MenuButton';
-import useStickyHeader from '../hooks/useStickyHeader';
+import { useStickyHeader } from '@/app/hooks';
 import { PATH } from '@/constants';
 
 const Header: React.FC = () => {

@@ -1,16 +1,22 @@
+'use client';
+
 import React from 'react';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
+import { useAuth } from '@/app/hooks';
 import AuthenticatedPage from '@/app/components/AuthenticatedPage';
+import UnauthenticatedPage from '@/app/components/UnauthenticatedPage';
 import TeamMemberCard from '@/app/components/TeamMemberCard';
 import { teamMembers } from '@/app/data/teamMembers';
 
 const Home: React.FC = () => {
   const t = useTranslations('MAIN');
 
+  const { user } = useAuth();
+
   return (
     <div className="flex flex-col max-w-screen-xl px-4 mx-auto pt-6">
-      <AuthenticatedPage />
+      {user ? <AuthenticatedPage /> : <UnauthenticatedPage />}
       <section className="flex flex-col min-h-600 mt-8 pb-10 ">
         <h2 className="text-6xl text-center font-semibold">{t('project_title')}</h2>
         <div className="flex flex-wrap gap-10 items-center justify-around mt-32">

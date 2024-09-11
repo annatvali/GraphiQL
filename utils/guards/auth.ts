@@ -19,8 +19,8 @@ export const isAuthUser = (user: unknown): user is AuthUser => {
     typeof user.uid === 'string' &&
     'email' in user &&
     (user.email === null || typeof user.email === 'string') &&
-    'displayName' in user &&
-    (user.displayName === null || typeof user.displayName === 'string')
+    'userName' in user &&
+    (user.userName === null || typeof user.userName === 'string')
   );
 };
 

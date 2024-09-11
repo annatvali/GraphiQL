@@ -6,6 +6,7 @@ import { useTranslations } from 'next-intl';
 import { useRouter } from '@/navigation';
 import FormLayout from '@/app/components/FormLayout';
 import FormField from '@/app/components/FormField';
+import { useAuth } from '@/app/hooks';
 import { SignInFormData, signInSchema } from '@/lib/schema';
 import { PATH } from '@/constants';
 
@@ -24,11 +25,11 @@ const Login = () => {
     mode: 'onChange',
   });
 
+  const { signIn } = useAuth();
   const router = useRouter();
 
-  const onSubmit: SubmitHandler<SignInFormData> = async (data: SignInFormData) => {
-    await Promise.resolve(true);
-    console.log('Form data:', data);
+  const onSubmit: SubmitHandler<SignInFormData> = async (data) => {
+    await signIn(data);
     router.push(PATH.MAIN);
   };
 

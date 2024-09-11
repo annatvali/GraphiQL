@@ -6,7 +6,7 @@ import { AuthUser } from '@/types';
 const mapUserRecordToAuthUser = ({ uid, email, displayName }: UserRecord): AuthUser => ({
   uid,
   email: email ?? null,
-  displayName: displayName ?? null,
+  userName: displayName ?? null,
 });
 
 const getVerifiedUserUid = async (): Promise<string | null> => {
