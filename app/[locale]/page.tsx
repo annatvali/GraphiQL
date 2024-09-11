@@ -29,7 +29,7 @@ const Home: React.FC = () => {
       <section className="flex flex-col min-h-600 mt-8 pb-10">
         <h2 className="text-6xl text-center font-semibold">{t('course_title')}</h2>
         <div className="flex flex-wrap gap-10 items-center justify-around mt-20">
-          <Image src={'/atom.png'} width={300} height={300} alt="Atom" />
+          <Image src={'/atom.png'} width={300} height={300} alt="Atom" className="w-auto h-auto" />
           <p className="text-lg max-w-360">
             {t('course_1')}
             <a href="https://rs.school/courses/reactjs" className="text-blue-500 hover:underline">
