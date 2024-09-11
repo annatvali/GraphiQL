@@ -16,19 +16,11 @@ const Register = () => {
       linkDescription={t('descr')}
     >
       <FormField
-        label={t('fname_label')}
+        label={t('username_label')}
         type="text"
-        name="first-name"
-        id="first-name"
-        placeholder={t('fname_label')}
-        required
-      />
-      <FormField
-        label={t('lname_label')}
-        type="text"
-        name="last-name"
-        id="last-name"
-        placeholder={t('lname_label')}
+        name="username"
+        id="username"
+        placeholder={t('username_label')}
         required
       />
       <FormField

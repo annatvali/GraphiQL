@@ -39,8 +39,7 @@
     "signup_btn": "Зарегистрироваться",
     "signin_link": "Войти",
     "descr": "Уже есть аккаунт?",
-    "fname_label": "Имя",
-    "lname_label": "Фамилия",
+    "username_label": "Имя пользователя",
     "email_label": "Email адрес",
     "psw_label": "Пароль",
     "confirm_psw_label": "Подтвердить пароль"
