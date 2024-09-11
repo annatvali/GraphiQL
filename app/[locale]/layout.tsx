@@ -4,6 +4,7 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import Header from '@/app/components/Header';
 import Footer from '@/app/components/Footer';
+import { AuthContextProvider } from '@/app/context';
 import '@/app/globals.css';
 
 const openSans = Open_Sans({ subsets: ['latin', 'cyrillic'] });
@@ -26,8 +27,10 @@ export default async function LocaleLayout({
     <html lang={locale}>
       <body className={openSans.className}>
         <NextIntlClientProvider messages={messages}>
-          <Header />
-          <main className="mt-23">{children}</main>
+          <AuthContextProvider>
+            <Header />
+            <main className="mt-23">{children}</main>
+          </AuthContextProvider>
           <Footer />
         </NextIntlClientProvider>
       </body>
