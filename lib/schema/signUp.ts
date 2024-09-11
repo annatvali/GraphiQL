@@ -25,3 +25,5 @@ export const signUpSchema = (t: ReturnType<typeof useTranslations<'VALIDATION'>>
       path: ['confirmPassword'],
       message: t('passwords-must-match'),
     });
+
+export type SignUpFormData = z.infer<ReturnType<typeof signUpSchema>>;
