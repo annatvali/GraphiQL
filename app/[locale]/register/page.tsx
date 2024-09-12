@@ -1,9 +1,40 @@
+'use client';
+import { useState } from 'react';
 import { useTranslations } from 'next-intl';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../../../lib/firebase';
 import FormLayout from '@/app/components/FormLayout';
 import FormField from '@/app/components/FormField';
 
 const Register = () => {
   const t = useTranslations('SIGN_UP');
+
+  const [formValues, setFormValues] = useState({
+    email: '',
+    password: '',
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormValues((prevValues) => ({
+      ...prevValues,
+      [name]: value,
+    }));
+    console.log(value);
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log('Form submitted with values:', formValues);
+    createUserWithEmailAndPassword(auth, formValues.email, formValues.password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        console.log(user);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   return (
     <FormLayout
@@ -13,6 +44,8 @@ const Register = () => {
       linkText={t('signin_link')}
       linkHref="/login"
       linkDescription={t('descr')}
+      type="submit"
+      onSubmit={handleSubmit}
     >
       <FormField
         label={t('fname_label')}
@@ -37,8 +70,19 @@ const Register = () => {
         id="email"
         placeholder="name@example.com"
         required
+        value={formValues.email}
+        onChange={handleChange}
       />
-      <FormField label={t('psw_label')} type="password" name="password" id="password" placeholder="••••••••" required />
+      <FormField
+        label={t('psw_label')}
+        type="password"
+        name="password"
+        id="password"
+        placeholder="••••••••"
+        required
+        value={formValues.password}
+        onChange={handleChange}
+      />
       <FormField
         label={t('confirm_psw_label')}
         type="password"
