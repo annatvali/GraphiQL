@@ -19,7 +19,7 @@ export const authMiddleware = async (request: NextRequest) => {
     return NextResponse.redirect(url);
   }
 
-  const apiUrl = new URL(API_ROUTE.SIGN_IN, url).toString();
+  const apiUrl = new URL(API_ROUTE.AUTH_STATUS, url).toString();
 
   const authResponse = await fetch(apiUrl, {
     headers: {

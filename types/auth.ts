@@ -18,7 +18,7 @@ export interface SignInSuccessData {
   user: AuthUser;
 }
 
-export interface AuthCheckSuccessData {
+export interface AuthStatusSuccessData {
   isLoggedIn: boolean;
 }
 
@@ -27,7 +27,7 @@ export interface SignOutSuccessData {
 }
 
 export type SignInResponse = AuthResponse<SignInSuccessData>;
-export type AuthCheckResponse = AuthResponse<AuthCheckSuccessData>;
+export type AuthStatusResponse = AuthResponse<AuthStatusSuccessData>;
 export type SignOutResponse = AuthResponse<SignOutSuccessData>;
 
 export interface SignInRequest {
