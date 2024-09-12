@@ -13,6 +13,7 @@ export const ROUTES = {
 };
 
 export const API_ROUTE = {
+  AUTH_STATUS: '/api/auth/status',
   SIGN_IN: '/api/auth/sign-in',
   SIGN_OUT: '/api/auth/sign-out',
 };
