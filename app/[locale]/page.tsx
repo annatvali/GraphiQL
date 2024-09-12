@@ -9,7 +9,7 @@ import UnauthenticatedPage from '@/app/components/UnauthenticatedPage';
 import TeamMemberCard from '@/app/components/TeamMemberCard';
 import { teamMembers } from '@/app/data/teamMembers';
 
-const Home: React.FC = () => {
+const Main: React.FC = () => {
   const t = useTranslations('MAIN');
 
   const { user } = useAuth();
@@ -49,4 +49,4 @@ const Home: React.FC = () => {
   );
 };
 
-export default Home;
+export default Main;
