@@ -1,25 +1,86 @@
-import { render } from '@testing-library/react';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { render, screen } from '@testing-library/react';
+import { describe, it, expect, vi } from 'vitest';
 import { ReactNode } from 'react';
+import { useAuth } from '@/app/hooks';
+import { signIn, signUp, signOut } from '@/lib/firebase/client/auth';
 import Main from '@/app/[locale]/page';
 
-describe('Main page', () => {
-  beforeEach(() => {
-    vi.mock('next-intl', () => ({
-      useTranslations: vi.fn().mockReturnValue((key: string) => key),
-    }));
+vi.mock('@/app/hooks');
+vi.mock('@/lib/firebase/client/auth');
+vi.mock('firebase/auth');
 
-    vi.mock('@/app/components/AuthenticatedPage', () => {
-      return {
-        default: (): ReactNode => <h1>title</h1>,
-      };
+vi.mock('next-intl', () => ({
+  useTranslations: vi.fn().mockReturnValue((key: string) => key),
+}));
+
+vi.mock('@/app/components/AuthenticatedPage', () => ({
+  default: (): ReactNode => <div>Authenticated Page</div>,
+}));
+
+vi.mock('@/app/components/UnauthenticatedPage', () => ({
+  default: () => <div>Unauthenticated Page</div>,
+}));
+
+vi.mock('@/app/components/TeamMemberCard', () => ({
+  default: ({ member }: { member: { name: string } }) => <div>{member.name}</div>,
+}));
+
+vi.mock('@/app/data/teamMembers', () => ({
+  teamMembers: [{ name: 'Member 1' }, { name: 'Member 2' }],
+}));
+
+describe('Main page', () => {
+  it('renders authenticated page when user is logged in', () => {
+    vi.mocked(useAuth).mockReturnValue({
+      user: { uid: '123', userName: 'Test User', email: '' },
+      signIn,
+      signUp,
+      signOut,
     });
+
+    render(Main({}));
+
+    expect(screen.getByText('Authenticated Page')).toBeInTheDocument();
+    expect(screen.queryByText('Unauthenticated Page')).toBeNull();
   });
 
-  it('renders correctly with heading', () => {
-    const { getByRole } = render(Main({}));
+  it('renders unauthenticated page when user is not logged in', () => {
+    vi.mocked(useAuth).mockReturnValue({ user: null, signIn, signUp, signOut });
 
-    const heading = getByRole('heading', { name: 'title', level: 1 });
-    expect(heading).toBeInTheDocument();
+    render(Main({}));
+
+    expect(screen.getByText('Unauthenticated Page')).toBeInTheDocument();
+    expect(screen.queryByText('Authenticated Page')).toBeNull();
+  });
+
+  it('renders project section with correct content', () => {
+    vi.mocked(useAuth).mockReturnValue({ user: null, signIn, signUp, signOut });
+
+    render(Main({}));
+
+    expect(screen.getByText('project_title')).toBeInTheDocument();
+    expect(screen.getByText('project')).toBeInTheDocument();
+    expect(screen.getByAltText('Diamond')).toBeInTheDocument();
+  });
+
+  it('renders team members', () => {
+    vi.mocked(useAuth).mockReturnValue({ user: null, signIn, signUp, signOut });
+
+    render(Main({}));
+
+    expect(screen.getByText('Member 1')).toBeInTheDocument();
+    expect(screen.getByText('Member 2')).toBeInTheDocument();
+  });
+
+  it('renders course section with correct content', () => {
+    vi.mocked(useAuth).mockReturnValue({ user: null, signIn, signUp, signOut });
+
+    render(Main({}));
+
+    expect(screen.getByText('course_title')).toBeInTheDocument();
+    expect(screen.getByText(/course_1/)).toBeInTheDocument();
+    expect(screen.getByText('course_link')).toBeInTheDocument();
+    expect(screen.getByText(/course_2/)).toBeInTheDocument();
+    expect(screen.getByAltText('Atom')).toBeInTheDocument();
   });
 });
