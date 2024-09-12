@@ -4,6 +4,7 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import Header from '@/app/components/Header';
 import Footer from '@/app/components/Footer';
+import { getCurrentUser } from '@/lib/firebase/server';
 import { AuthContextProvider } from '@/app/context';
 import '@/app/globals.css';
 
@@ -23,11 +24,13 @@ export default async function LocaleLayout({
 }>) {
   const messages = await getMessages();
 
+  const user = await getCurrentUser();
+
   return (
     <html lang={locale}>
       <body className={openSans.className}>
         <NextIntlClientProvider messages={messages}>
-          <AuthContextProvider>
+          <AuthContextProvider user={user}>
             <Header />
             <main className="mt-23">{children}</main>
           </AuthContextProvider>
