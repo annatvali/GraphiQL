@@ -5,7 +5,7 @@ import { SignOutResponse } from '@/types';
 import { isAuthError } from '@/utils/guards';
 import { APP_ERROR_CODE, SESSION_COOKIE_NAME } from '@/constants';
 
-export const GET = async () => {
+export const GET = async (): Promise<NextResponse<SignOutResponse>> => {
   try {
     const sessionCookie = getSessionCookie();
 

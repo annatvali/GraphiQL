@@ -1,12 +1,48 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { FirebaseError } from 'firebase/app';
-import { SignInResponse } from '@/types';
-import { createSessionCookie, getCurrentUser, revokeRefreshTokens, setSessionCookie } from '@/lib/firebase/server';
+import { AuthCheckResponse, SignInResponse } from '@/types';
+import {
+  createSessionCookie,
+  getCurrentUser,
+  isUserAuthenticated,
+  revokeRefreshTokens,
+  setSessionCookie,
+} from '@/lib/firebase/server';
 import { isAuthError } from '@/utils/guards';
 import { APP_ERROR_CODE, SESSION_COOKIE_NAME } from '@/constants';
 import { parseBearerToken } from './parseBearerToken';
 
-export const POST = async (request: NextRequest) => {
+export const GET = async (): Promise<NextResponse<AuthCheckResponse>> => {
+  try {
+    const isLoggedIn = await isUserAuthenticated();
+
+    const statusCode = isLoggedIn ? 200 : 401;
+
+    return NextResponse.json<AuthCheckResponse>(
+      {
+        error: null,
+        data: {
+          isLoggedIn,
+        },
+      },
+      { status: statusCode }
+    );
+  } catch (err) {
+    const error = isAuthError(err)
+      ? err
+      : new FirebaseError(APP_ERROR_CODE.UNKNOWN_ERROR, 'Failed to check user status.');
+
+    return NextResponse.json<AuthCheckResponse>(
+      {
+        error,
+        data: null,
+      },
+      { status: 400 }
+    );
+  }
+};
+
+export const POST = async (request: NextRequest): Promise<NextResponse<SignInResponse>> => {
   try {
     const authHeader = request.headers.get('Authorization');
 
