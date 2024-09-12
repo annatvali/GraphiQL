@@ -8,7 +8,9 @@ import FormLayout from '@/app/components/FormLayout';
 import FormField from '@/app/components/FormField';
 import { useAuth } from '@/app/hooks';
 import { SignInFormData, signInSchema } from '@/lib/schema';
-import { PATH } from '@/constants';
+import { PATH, SESSION_COOKIE } from '@/constants';
+
+const sessionDurationHours = Math.floor(SESSION_COOKIE.MAX_AGE_SECONDS / 3600);
 
 const Login = () => {
   const tPage = useTranslations('SIGN_IN');
@@ -71,7 +73,7 @@ const Login = () => {
       {errors.password && <p className="text-red-500">{errors.password.message}</p>}
 
       <div className="flex justify-center ml-3 text-sm">
-        <p className="text-gray-500 dark:text-gray-300">{tPage('login_duration')}</p>
+        <p className="text-gray-500 dark:text-gray-300">{tPage('login_duration', { sessionDurationHours })}</p>
       </div>
     </FormLayout>
   );

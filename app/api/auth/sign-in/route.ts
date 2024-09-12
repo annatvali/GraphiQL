@@ -2,9 +2,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import { FirebaseError } from 'firebase/app';
 import { SignInResponse } from '@/types';
 import { setSessionCookie } from '@/lib/cookies';
-import { createSessionCookie, getCurrentUser, revokeRefreshTokens } from '@/lib/firebase/server';
+import { createSessionCookie, getCurrentUser } from '@/lib/firebase/server';
 import { isAuthError } from '@/utils/guards';
-import { APP_ERROR_CODE, HTTP_STATUS_CODE, SESSION_COOKIE_NAME } from '@/constants';
+import { APP_ERROR_CODE, HTTP_STATUS_CODE, SESSION_COOKIE } from '@/constants';
 import { parseBearerToken } from './parseBearerToken';
 
 export const POST = async (request: NextRequest): Promise<NextResponse<SignInResponse>> => {
@@ -13,12 +13,10 @@ export const POST = async (request: NextRequest): Promise<NextResponse<SignInRes
 
     const idToken = parseBearerToken(authHeader);
 
-    const expiresIn = 60 * 60 * 1000;
+    const expiresInMs = SESSION_COOKIE.MAX_AGE_SECONDS * 1000;
 
-    const sessionCookie = await createSessionCookie(idToken, { expiresIn });
-    setSessionCookie(sessionCookie, expiresIn);
-
-    await revokeRefreshTokens(sessionCookie);
+    const sessionCookie = await createSessionCookie(idToken, { expiresIn: expiresInMs });
+    setSessionCookie(sessionCookie, SESSION_COOKIE.MAX_AGE_SECONDS);
 
     const user = await getCurrentUser();
 
@@ -33,10 +31,11 @@ export const POST = async (request: NextRequest): Promise<NextResponse<SignInRes
       },
     });
 
-    response.cookies.set(SESSION_COOKIE_NAME, sessionCookie, {
-      httpOnly: true,
+    response.cookies.set(SESSION_COOKIE.NAME, sessionCookie, {
+      maxAge: SESSION_COOKIE.MAX_AGE_SECONDS,
       secure: process.env.NODE_ENV === 'production',
-      maxAge: expiresIn,
+      httpOnly: true,
+      sameSite: 'strict',
       path: '/',
     });
 

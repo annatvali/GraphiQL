@@ -13,6 +13,8 @@ export const createSessionCookie = async (
     const timeNowSeconds = Math.floor(Date.now() / 1000);
 
     if (timeNowSeconds - decodedIdToken.auth_time >= recentLoginThresholdSeconds) {
+      await firebaseAdminAuth.revokeRefreshTokens(decodedIdToken.sub);
+
       throw new Error('Recent sign-in required');
     }
 
