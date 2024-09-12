@@ -18,11 +18,16 @@ export interface SignInSuccessData {
   user: AuthUser;
 }
 
+export interface AuthCheckSuccessData {
+  isLoggedIn: boolean;
+}
+
 export interface SignOutSuccessData {
   isSignedOut: boolean;
 }
 
 export type SignInResponse = AuthResponse<SignInSuccessData>;
+export type AuthCheckResponse = AuthResponse<AuthCheckSuccessData>;
 export type SignOutResponse = AuthResponse<SignOutSuccessData>;
 
 export interface SignInRequest {
