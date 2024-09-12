@@ -29,7 +29,7 @@ const isSignInSuccessData = (data: unknown): data is SignInSuccessData => {
 };
 
 const isSignOutSuccessData = (data: unknown): data is SignOutSuccessData => {
-  return typeof data === 'object' && data !== null && 'isSignedOut' in data && data.isSignedOut === 'boolean';
+  return typeof data === 'object' && data !== null && 'isSignedOut' in data && typeof data.isSignedOut === 'boolean';
 };
 
 export const isSignInResponse = (response: unknown): response is SignInResponse => {
