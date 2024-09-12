@@ -18,7 +18,10 @@ export const API_ROUTE = {
   SIGN_OUT: '/api/auth/sign-out',
 };
 
-export const SESSION_COOKIE_NAME = 'user_session';
+export const SESSION_COOKIE = {
+  NAME: 'user_session',
+  MAX_AGE_SECONDS: 60 * 60,
+} as const;
 
 export const APP_ERROR_CODE = {
   UNKNOWN_ERROR: 'app/unknown-error',

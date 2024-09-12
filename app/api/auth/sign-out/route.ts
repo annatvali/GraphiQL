@@ -4,7 +4,7 @@ import { revokeRefreshTokens } from '@/lib/firebase/server';
 import { FirebaseError } from 'firebase/app';
 import { SignOutResponse } from '@/types';
 import { isAuthError } from '@/utils/guards';
-import { APP_ERROR_CODE, HTTP_STATUS_CODE, SESSION_COOKIE_NAME } from '@/constants';
+import { APP_ERROR_CODE, HTTP_STATUS_CODE, SESSION_COOKIE } from '@/constants';
 
 export const GET = async (): Promise<NextResponse<SignOutResponse>> => {
   try {
@@ -24,7 +24,7 @@ export const GET = async (): Promise<NextResponse<SignOutResponse>> => {
       },
     });
 
-    response.cookies.set(SESSION_COOKIE_NAME, '', {
+    response.cookies.set(SESSION_COOKIE.NAME, '', {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       maxAge: -1,

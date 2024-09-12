@@ -1,25 +1,26 @@
 import { cookies } from 'next/headers';
-import { SESSION_COOKIE_NAME } from '@/constants';
+import { SESSION_COOKIE } from '@/constants';
 
 export const getSessionCookie = (): string | undefined => {
   const cookieStore = cookies();
 
-  return cookieStore.get(SESSION_COOKIE_NAME)?.value;
+  return cookieStore.get(SESSION_COOKIE.NAME)?.value;
 };
 
-export const setSessionCookie = (sessionCookie: string, expiresInMs: number) => {
+export const setSessionCookie = (sessionCookie: string, expiresInSeconds: number) => {
   const cookieStore = cookies();
 
-  cookieStore.set(SESSION_COOKIE_NAME, sessionCookie, {
-    maxAge: expiresInMs,
+  cookieStore.set(SESSION_COOKIE.NAME, sessionCookie, {
+    maxAge: expiresInSeconds,
+    secure: true,
     httpOnly: true,
     sameSite: 'strict',
-    secure: true,
+    path: '/',
   });
 };
 
 export const deleteSessionCookie = (): void => {
   const cookieStore = cookies();
 
-  cookieStore.delete(SESSION_COOKIE_NAME);
+  cookieStore.delete(SESSION_COOKIE.NAME);
 };

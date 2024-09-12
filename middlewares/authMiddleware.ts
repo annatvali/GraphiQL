@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { locales } from '@/i18n.config';
-import { API_ROUTE, HTTP_STATUS_CODE, PATH, ROUTES, SESSION_COOKIE_NAME } from '@/constants';
+import { API_ROUTE, HTTP_STATUS_CODE, PATH, ROUTES, SESSION_COOKIE } from '@/constants';
 
 const localePrefix = locales.join('|');
 const localePrefixRegex = new RegExp(`^/(${localePrefix})/`);
@@ -12,7 +12,7 @@ export const authMiddleware = async (request: NextRequest) => {
 
   const pathWithoutLocale = pathname.replace(localePrefixRegex, '/');
 
-  const sessionCookie = request.cookies.get(SESSION_COOKIE_NAME);
+  const sessionCookie = request.cookies.get(SESSION_COOKIE.NAME);
 
   if (!sessionCookie && ROUTES.PROTECTED.includes(pathWithoutLocale)) {
     url.pathname = PATH.MAIN;
@@ -23,7 +23,7 @@ export const authMiddleware = async (request: NextRequest) => {
 
   const authResponse = await fetch(apiUrl, {
     headers: {
-      Cookie: `${SESSION_COOKIE_NAME}=${sessionCookie?.value}`,
+      Cookie: `${SESSION_COOKIE.NAME}=${sessionCookie?.value}`,
     },
   });
 
