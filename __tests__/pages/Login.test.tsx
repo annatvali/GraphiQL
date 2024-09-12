@@ -3,16 +3,36 @@ import userEvent from '@testing-library/user-event';
 import { beforeAll, describe, it, expect, vi } from 'vitest';
 import { NextIntlClientProvider } from 'next-intl';
 import { useRouter } from '@/navigation';
+import { useAuth } from '@/app/hooks';
 import { PATH, SESSION_COOKIE } from '@/constants';
 import Login from '@/app/[locale]/login/page';
 
-vi.mock('@/navigation');
+vi.mock('@/app/hooks', () => {
+  const signInMock = vi.fn().mockResolvedValue({ uid: '123', userName: 'Test User', email: 'test@test.com' });
 
-vi.mock('@/app/hooks', () => ({
-  useAuth: () => ({
-    signIn: vi.fn().mockResolvedValue(true),
-  }),
-}));
+  return {
+    useAuth: () => ({
+      signIn: signInMock,
+    }),
+  };
+});
+
+vi.mock('@/navigation', async () => {
+  const original = await vi.importActual('@/navigation');
+  const pushMock = vi.fn();
+
+  return {
+    ...original,
+    useRouter: vi.fn(() => ({
+      push: pushMock,
+      replace: vi.fn(),
+      back: vi.fn(),
+      prefetch: vi.fn(),
+      query: {},
+      pathname: '/',
+    })),
+  };
+});
 
 let mockMessages: IntlMessages;
 const locale = 'en';
@@ -85,16 +105,17 @@ describe('Login', () => {
     expect(await screen.findByText(/Password is too short/i)).toBeInTheDocument();
   });
 
-  it.todo('submits form and redirects', async () => {
-    const { push } = useRouter();
-
-    const user = userEvent.setup();
-
+  it('submits form and redirects', async () => {
     render(
       <NextIntlClientProvider locale={locale} messages={mockMessages}>
         <Login />
       </NextIntlClientProvider>
     );
+
+    const signInMock = useAuth().signIn;
+    const pushMock = useRouter().push;
+
+    const user = userEvent.setup();
 
     const emailInput = screen.getByLabelText(/Email/i);
     const passwordInput = screen.getByLabelText(/Password/i);
@@ -104,14 +125,18 @@ describe('Login', () => {
     expect(signInButton).toBeDisabled();
 
     await user.type(emailInput, 'test@example.com');
-    await user.type(passwordInput, 'ValidPassword123&');
+    await user.type(passwordInput, 'Password123!');
 
     expect(signInButton).toBeEnabled();
 
     await user.click(signInButton);
 
     await waitFor(() => {
-      expect(push).toHaveBeenCalledWith(`${PATH.MAIN}${locale}`);
+      expect(signInMock).toHaveBeenCalledWith({
+        email: 'test@example.com',
+        password: 'Password123!',
+      });
+      expect(pushMock).toHaveBeenCalledWith(PATH.MAIN);
     });
   });
 });
