@@ -4,17 +4,17 @@ import { NextIntlClientProvider } from 'next-intl';
 import { PATH } from '@/constants';
 import NotFoundPage from '@/app/[locale]/not-found';
 
+const mockTranslations = {
+  NOT_FOUND: {
+    title: 'Page Not Found',
+    message: 'The page you are looking for does not exist.',
+    link_to_main: 'Go to Main Page',
+  },
+};
+
 describe('NotFoundPage', () => {
   it('renders correctly with translations', async () => {
     const locale = 'en';
-
-    const mockTranslations = {
-      NOT_FOUND: {
-        title: 'Page Not Found',
-        message: 'The page you are looking for does not exist.',
-        link_to_main: 'Go to Main Page',
-      },
-    };
 
     const messages = (await import('@/messages/en.json')).default;
 
