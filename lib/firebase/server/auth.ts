@@ -1,7 +1,7 @@
 import { UserRecord } from 'firebase-admin/auth';
-import { firebaseAdminAuth } from './config';
-import { getSessionCookie } from './session';
+import { getSessionCookie } from '@/lib/cookies';
 import { AuthUser } from '@/types';
+import { firebaseAdminAuth } from './config';
 
 const mapUserRecordToAuthUser = ({ uid, email, displayName }: UserRecord): AuthUser => ({
   uid,
