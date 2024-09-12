@@ -3,58 +3,52 @@ import { SESSION_COOKIE } from '@/constants';
 import { cookies } from 'next/headers';
 import { getSessionCookie, setSessionCookie, deleteSessionCookie } from '@/lib/cookies';
 
-vi.mock('next/headers', () => ({
-  cookies: vi.fn(() => ({
-    get: vi.fn(),
-    set: vi.fn(),
-    delete: vi.fn(),
-  })),
-}));
+vi.mock('next/headers', () => {
+  const getMock = vi.fn();
+  const setMock = vi.fn();
+  const deleteMock = vi.fn();
+
+  const cookiesMock = vi.fn(() => ({
+    get: getMock,
+    set: setMock,
+    delete: deleteMock,
+  }));
+
+  return {
+    cookies: cookiesMock,
+  };
+});
 
 describe('Cookie Functions', () => {
-  it.todo('getSessionCookie returns undefined when no cookie exists', () => {
-    const mockCookies = cookies();
-    const getSpy = vi.spyOn(mockCookies, 'get');
+  it('getSessionCookie returns undefined when no cookie exists', () => {
+    const getMock = cookies().get;
 
     const result = getSessionCookie();
 
     expect(result).toBeUndefined();
 
-    expect(getSpy).toHaveBeenCalledTimes(1);
-    expect(mockCookies).toHaveBeenCalledTimes(1);
-    expect(getSpy).toHaveBeenCalledWith(SESSION_COOKIE.NAME);
+    expect(getMock).toHaveBeenCalledWith(SESSION_COOKIE.NAME);
   });
 
-  it('should spy on the get method', () => {
-    const mockCookies = cookies();
-    const getSpy = vi.spyOn(mockCookies, 'get');
-
-    mockCookies.get('testKey');
-
-    expect(getSpy).toHaveBeenCalledWith('testKey');
-  });
-
-  it.todo('getSessionCookie returns cookie value when it exists', () => {
+  it('getSessionCookie returns cookie value when it exists', () => {
     const mockCookieValue = 'some-value';
-    const mockCookies = cookies();
 
-    const getSpy = vi.spyOn(mockCookies, 'get');
-    getSpy.mockReturnValue({ name: SESSION_COOKIE.NAME, value: mockCookieValue });
+    const getMock = cookies().get;
+    vi.mocked(getMock).mockReturnValue({ name: SESSION_COOKIE.NAME, value: mockCookieValue });
 
     const result = getSessionCookie();
 
     expect(result).toBe(mockCookieValue);
 
-    expect(mockCookies).toHaveBeenCalledTimes(1);
-    expect(getSpy).toHaveBeenCalledWith(SESSION_COOKIE.NAME);
+    expect(getMock).toHaveBeenCalledWith(SESSION_COOKIE.NAME);
   });
 
-  it.todo('setSessionCookie adds a new cookie', () => {
-    const mockCookies = vi.mocked(cookies);
+  it('setSessionCookie adds a new cookie', () => {
+    const setMock = cookies().set;
 
     setSessionCookie('test-value', 3600);
 
-    expect(mockCookies).toHaveBeenCalledWith(SESSION_COOKIE.NAME, 'test-value', {
+    expect(setMock).toHaveBeenCalledWith(SESSION_COOKIE.NAME, 'test-value', {
       maxAge: 3600,
       secure: true,
       httpOnly: true,
@@ -63,11 +57,11 @@ describe('Cookie Functions', () => {
     });
   });
 
-  it.todo('deleteSessionCookie removes the cookie', () => {
-    const mockCookies = vi.mocked(cookies);
+  it('deleteSessionCookie removes the cookie', () => {
+    const deleteMock = cookies().delete;
 
     deleteSessionCookie();
 
-    expect(mockCookies).toHaveBeenCalledWith(SESSION_COOKIE.NAME);
+    expect(deleteMock).toHaveBeenCalledWith(SESSION_COOKIE.NAME);
   });
 });
