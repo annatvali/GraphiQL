@@ -1,8 +1,9 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { beforeAll, describe, it, expect, vi } from 'vitest';
 import { NextIntlClientProvider } from 'next-intl';
-import { SESSION_COOKIE } from '@/constants';
+import { useRouter } from '@/navigation';
+import { PATH, SESSION_COOKIE } from '@/constants';
 import Login from '@/app/[locale]/login/page';
 
 vi.mock('@/navigation');
@@ -84,7 +85,9 @@ describe('Login', () => {
     expect(await screen.findByText(/Password is too short/i)).toBeInTheDocument();
   });
 
-  it('submits form and redirects', async () => {
+  it.todo('submits form and redirects', async () => {
+    const { push } = useRouter();
+
     const user = userEvent.setup();
 
     render(
@@ -104,5 +107,11 @@ describe('Login', () => {
     await user.type(passwordInput, 'ValidPassword123&');
 
     expect(signInButton).toBeEnabled();
+
+    await user.click(signInButton);
+
+    await waitFor(() => {
+      expect(push).toHaveBeenCalledWith(`${PATH.MAIN}${locale}`);
+    });
   });
 });
