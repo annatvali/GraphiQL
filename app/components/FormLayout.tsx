@@ -10,6 +10,8 @@ interface FormLayoutProps {
   linkText: string;
   linkHref: string;
   linkDescription: string;
+  type?: 'submit' | 'button' | 'reset';
+  onSubmit?: (e: React.FormEvent<HTMLFormElement>) => void;
 }
 
 const FormLayout: React.FC<FormLayoutProps> = ({
@@ -20,15 +22,18 @@ const FormLayout: React.FC<FormLayoutProps> = ({
   linkText,
   linkHref,
   linkDescription,
+  type,
+  onSubmit,
 }) => {
   return (
     <section className="flex items-center justify-center px-2 pt-16 pb-12">
       <div className="w-full max-w-md bg-white rounded-lg shadow bg-purple-100 dark:border dark:bg-gray-800 dark:border-gray-700">
         <div className="p-6 space-y-6">
           <h1 className="text-3xl text-center font-bold text-gray-900 dark:text-white text-custom-purple">{title}</h1>
-          <form className="space-y-6" action="#">
+          <form onSubmit={onSubmit} className="space-y-6" action="#">
             {children}
             <ButtonLink
+              type={type}
               className="w-full block font-semibold bg-custom-purple border-2 border-transparent hover:text-custom-purple hover:border-custom-purple hover:bg-purple-50"
               href={buttonHref}
             >

@@ -7,6 +7,7 @@ interface ButtonLinkProps {
   onClick?: () => void;
   children: React.ReactNode;
   className?: string;
+  type?: 'submit' | 'button' | 'reset';
 }
 
 const ButtonLink: React.FC<ButtonLinkProps> = ({ href, onClick, children, className }) => {
