@@ -1,32 +1,7 @@
-import { cookies } from 'next/headers';
 import { SessionCookieOptions } from 'firebase-admin/auth';
-import { SESSION_COOKIE_NAME } from '@/constants';
 import { firebaseAdminAuth } from './config';
 
 const recentLoginThresholdSeconds = 5 * 60;
-
-export const getSessionCookie = (): string | undefined => {
-  const cookieStore = cookies();
-
-  return cookieStore.get(SESSION_COOKIE_NAME)?.value;
-};
-
-export const setSessionCookie = (sessionCookie: string, expiresInMs: number) => {
-  const cookieStore = cookies();
-
-  cookieStore.set(SESSION_COOKIE_NAME, sessionCookie, {
-    maxAge: expiresInMs,
-    httpOnly: true,
-    sameSite: 'strict',
-    secure: true,
-  });
-};
-
-export const deleteSessionCookie = (): void => {
-  const cookieStore = cookies();
-
-  cookieStore.delete(SESSION_COOKIE_NAME);
-};
 
 export const createSessionCookie = async (
   idToken: string,

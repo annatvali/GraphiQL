@@ -1,9 +1,10 @@
 import { NextResponse } from 'next/server';
-import { getSessionCookie, deleteSessionCookie, revokeRefreshTokens } from '@/lib/firebase/server';
+import { getSessionCookie, deleteSessionCookie } from '@/lib/cookies';
+import { revokeRefreshTokens } from '@/lib/firebase/server';
 import { FirebaseError } from 'firebase/app';
 import { SignOutResponse } from '@/types';
 import { isAuthError } from '@/utils/guards';
-import { APP_ERROR_CODE, SESSION_COOKIE_NAME } from '@/constants';
+import { APP_ERROR_CODE, HTTP_STATUS_CODE, SESSION_COOKIE_NAME } from '@/constants';
 
 export const GET = async (): Promise<NextResponse<SignOutResponse>> => {
   try {
@@ -36,6 +37,6 @@ export const GET = async (): Promise<NextResponse<SignOutResponse>> => {
       ? err
       : new FirebaseError(APP_ERROR_CODE.UNKNOWN_ERROR, 'An unexpected error occurred during logout.');
 
-    return NextResponse.json<SignOutResponse>({ data: null, error }, { status: 400 });
+    return NextResponse.json<SignOutResponse>({ data: null, error }, { status: HTTP_STATUS_CODE.BAD_REQUEST });
   }
 };

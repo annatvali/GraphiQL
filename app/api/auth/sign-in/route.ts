@@ -1,22 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { FirebaseError } from 'firebase/app';
 import { AuthCheckResponse, SignInResponse } from '@/types';
-import {
-  createSessionCookie,
-  getCurrentUser,
-  isUserAuthenticated,
-  revokeRefreshTokens,
-  setSessionCookie,
-} from '@/lib/firebase/server';
+import { setSessionCookie } from '@/lib/cookies';
+import { createSessionCookie, getCurrentUser, isUserAuthenticated, revokeRefreshTokens } from '@/lib/firebase/server';
 import { isAuthError } from '@/utils/guards';
-import { APP_ERROR_CODE, SESSION_COOKIE_NAME } from '@/constants';
+import { APP_ERROR_CODE, HTTP_STATUS_CODE, SESSION_COOKIE_NAME } from '@/constants';
 import { parseBearerToken } from './parseBearerToken';
 
 export const GET = async (): Promise<NextResponse<AuthCheckResponse>> => {
   try {
     const isLoggedIn = await isUserAuthenticated();
 
-    const statusCode = isLoggedIn ? 200 : 401;
+    const statusCode = isLoggedIn ? HTTP_STATUS_CODE.OK : HTTP_STATUS_CODE.UNAUTHORIZED;
 
     return NextResponse.json<AuthCheckResponse>(
       {
@@ -37,7 +32,7 @@ export const GET = async (): Promise<NextResponse<AuthCheckResponse>> => {
         error,
         data: null,
       },
-      { status: 400 }
+      { status: HTTP_STATUS_CODE.BAD_REQUEST }
     );
   }
 };
@@ -84,7 +79,7 @@ export const POST = async (request: NextRequest): Promise<NextResponse<SignInRes
         error,
         data: null,
       },
-      { status: 400 }
+      { status: HTTP_STATUS_CODE.BAD_REQUEST }
     );
   }
 };
