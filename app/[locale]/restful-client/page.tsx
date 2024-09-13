@@ -1,5 +1,8 @@
+'use client';
+
 import React from 'react';
 import { useTranslations } from 'next-intl';
+import { withAuthRedirect } from '@/app/hoc';
 
 const RestfulClientPage: React.FC = () => {
   const t = useTranslations('RESTFUL_CLIENT');
@@ -12,4 +15,6 @@ const RestfulClientPage: React.FC = () => {
   );
 };
 
-export default RestfulClientPage;
+const RestfulClientPageWithAuth = withAuthRedirect(RestfulClientPage, { redirectIfLoggedIn: false });
+
+export default RestfulClientPageWithAuth;

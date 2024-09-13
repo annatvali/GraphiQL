@@ -1,5 +1,8 @@
+'use client';
+
 import React from 'react';
 import { useTranslations } from 'next-intl';
+import { withAuthRedirect } from '@/app/hoc';
 
 const HistoryPage: React.FC = () => {
   const t = useTranslations('HISTORY');
@@ -12,4 +15,6 @@ const HistoryPage: React.FC = () => {
   );
 };
 
-export default HistoryPage;
+const HistoryPageWithAuth = withAuthRedirect(HistoryPage, { redirectIfLoggedIn: false });
+
+export default HistoryPageWithAuth;

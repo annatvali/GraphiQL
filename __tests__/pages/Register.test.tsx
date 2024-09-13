@@ -4,6 +4,7 @@ import { beforeAll, describe, it, expect, vi } from 'vitest';
 import { NextIntlClientProvider } from 'next-intl';
 import { useRouter } from '@/navigation';
 import { useAuth } from '@/app/hooks';
+import { signIn, signUp, signOut } from '@/lib/firebase/client/auth';
 import { PATH } from '@/constants';
 import Register from '@/app/[locale]/register/page';
 
@@ -16,25 +17,37 @@ vi.mock('firebase/auth', async () => {
   };
 });
 
+vi.mock('@/lib/firebase/client/auth', async () => {
+  const original = await vi.importActual('@/lib/firebase/client/auth');
+
+  return {
+    ...original,
+    signIn: vi.fn(),
+    signUp: vi.fn(),
+    signOut: vi.fn(),
+  };
+});
+
 vi.mock('@/app/hooks', () => {
   const signUpMock = vi.fn().mockResolvedValue({ uid: '123', userName: 'Test User', email: 'test@test.com' });
 
   return {
-    useAuth: () => ({
+    useAuth: vi.fn(() => ({
       signUp: signUpMock,
-    }),
+    })),
   };
 });
 
 vi.mock('@/navigation', async () => {
   const original = await vi.importActual('@/navigation');
   const pushMock = vi.fn();
+  const replaceMock = vi.fn();
 
   return {
     ...original,
     useRouter: vi.fn(() => ({
       push: pushMock,
-      replace: vi.fn(),
+      replace: replaceMock,
       back: vi.fn(),
       prefetch: vi.fn(),
       query: {},
@@ -44,7 +57,6 @@ vi.mock('@/navigation', async () => {
 });
 
 let mockMessages: IntlMessages;
-
 const locale = 'en';
 
 beforeAll(async () => {
@@ -84,7 +96,9 @@ beforeAll(async () => {
 });
 
 describe('Register', () => {
-  it('renders form with fields and translations', () => {
+  it('renders form with fields and translations when not logged in', () => {
+    vi.mocked(useAuth).mockReturnValue({ user: null, signIn, signUp, signOut });
+
     render(
       <NextIntlClientProvider locale={locale} messages={mockMessages}>
         <Register />
@@ -169,5 +183,24 @@ describe('Register', () => {
       });
       expect(pushMock).toHaveBeenCalledWith(PATH.MAIN);
     });
+  });
+
+  it('redirects when logged in', () => {
+    vi.mocked(useAuth).mockReturnValue({
+      user: { uid: '123', userName: 'Test User', email: 'test@test.com' },
+      signIn,
+      signUp,
+      signOut,
+    });
+
+    const replaceMock = useRouter().replace;
+
+    render(
+      <NextIntlClientProvider locale={locale} messages={mockMessages}>
+        <Register />
+      </NextIntlClientProvider>
+    );
+
+    expect(replaceMock).toHaveBeenCalledWith(PATH.MAIN);
   });
 });

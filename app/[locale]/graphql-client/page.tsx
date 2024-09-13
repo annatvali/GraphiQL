@@ -1,5 +1,8 @@
+'use client';
+
 import React from 'react';
 import { useTranslations } from 'next-intl';
+import { withAuthRedirect } from '@/app/hoc';
 
 const GraphQLClientPage: React.FC = () => {
   const t = useTranslations('GRAPHQL_CLIENT');
@@ -12,4 +15,6 @@ const GraphQLClientPage: React.FC = () => {
   );
 };
 
-export default GraphQLClientPage;
+const GraphQLClientPageWithAuth = withAuthRedirect(GraphQLClientPage, { redirectIfLoggedIn: false });
+
+export default GraphQLClientPageWithAuth;

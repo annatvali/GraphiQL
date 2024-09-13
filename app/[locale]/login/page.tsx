@@ -9,10 +9,11 @@ import FormField from '@/app/components/FormField';
 import { useAuth } from '@/app/hooks';
 import { SignInFormData, signInSchema } from '@/lib/schema';
 import { PATH, SESSION_COOKIE } from '@/constants';
+import { withAuthRedirect } from '@/app/hoc';
 
 const sessionDurationHours = Math.floor(SESSION_COOKIE.MAX_AGE_SECONDS / 3600);
 
-const Login = () => {
+const LoginPage = () => {
   const tPage = useTranslations('SIGN_IN');
   const tValidation = useTranslations('VALIDATION');
 
@@ -79,4 +80,6 @@ const Login = () => {
   );
 };
 
-export default Login;
+const LoginPageWithAuth = withAuthRedirect(LoginPage, { redirectIfLoggedIn: true });
+
+export default LoginPageWithAuth;

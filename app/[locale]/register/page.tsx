@@ -9,8 +9,9 @@ import FormField from '@/app/components/FormField';
 import { useAuth } from '@/app/hooks';
 import { SignUpFormData, signUpSchema } from '@/lib/schema';
 import { PATH } from '@/constants';
+import { withAuthRedirect } from '@/app/hoc';
 
-const Register = () => {
+const RegisterPage = () => {
   const tPage = useTranslations('SIGN_UP');
   const tValidation = useTranslations('VALIDATION');
 
@@ -95,4 +96,6 @@ const Register = () => {
   );
 };
 
-export default Register;
+const RegisterPageWithAuth = withAuthRedirect(RegisterPage, { redirectIfLoggedIn: true });
+
+export default RegisterPageWithAuth;
