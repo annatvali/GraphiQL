@@ -10,7 +10,7 @@ interface LanguageChangerProps {
   closeMenu: () => void;
 }
 
-const LanguageChanger = ({ locale, className, closeMenu }: LanguageChangerProps): React.ReactNode => {
+export const LanguageChanger = ({ locale, className, closeMenu }: LanguageChangerProps): React.ReactNode => {
   const router = useRouter();
   const pathname = usePathname();
 
@@ -31,5 +31,3 @@ const LanguageChanger = ({ locale, className, closeMenu }: LanguageChangerProps)
     </Dropdown>
   );
 };
-
-export default LanguageChanger;

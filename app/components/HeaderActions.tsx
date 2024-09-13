@@ -4,7 +4,7 @@ import { useLocale } from 'next-intl';
 import { Locale } from '@/i18n.config';
 import { useTranslations } from 'next-intl';
 import { useRouter } from '@/navigation';
-import LanguageChanger from './LanguageChanger';
+import { LanguageChanger } from './LanguageChanger';
 import ButtonLink from './ButtonLink';
 import Button from './Button';
 import PropTypes from 'prop-types';
