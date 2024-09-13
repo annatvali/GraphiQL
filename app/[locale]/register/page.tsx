@@ -4,10 +4,9 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations } from 'next-intl';
 import { useRouter } from '@/navigation';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { firebaseClientAuth } from '@/lib/firebase/client/config';
 import FormLayout from '@/app/components/FormLayout';
 import FormField from '@/app/components/FormField';
+import { useAuth } from '@/app/hooks';
 import { SignUpFormData, signUpSchema } from '@/lib/schema';
 import { PATH } from '@/constants';
 
@@ -26,21 +25,11 @@ const Register = () => {
     mode: 'onChange',
   });
 
+  const { signUp } = useAuth();
   const router = useRouter();
 
-  const onSubmit: SubmitHandler<SignUpFormData> = async (formValues: SignUpFormData) => {
-    await Promise.resolve(true);
-
-    console.log('Form submitted with values:', formValues);
-    createUserWithEmailAndPassword(firebaseClientAuth, formValues.email, formValues.password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        console.log(user);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-
+  const onSubmit: SubmitHandler<SignUpFormData> = async ({ userName, email, password }) => {
+    await signUp({ userName, email, password });
     router.push(PATH.MAIN);
   };
 

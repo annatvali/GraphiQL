@@ -6,7 +6,7 @@ export interface AuthError {
 export interface AuthUser {
   readonly uid: string;
   readonly email: string | null;
-  readonly displayName: string | null;
+  readonly userName: string | null;
 }
 
 interface AuthResponse<TData> {

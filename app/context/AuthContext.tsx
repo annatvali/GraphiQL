@@ -14,7 +14,7 @@ interface AuthContextProviderProps {
   user?: AuthUser | null;
 }
 
-const mapUserToAuthUser = ({ uid, email, displayName }: User): AuthUser => ({ uid, email, displayName });
+const mapUserToAuthUser = ({ uid, email, displayName }: User): AuthUser => ({ uid, email, userName: displayName });
 
 export const AuthContext = createContext<AuthContextType>({ user: null });
 

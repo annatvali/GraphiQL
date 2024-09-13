@@ -1,10 +1,11 @@
 {
   "HEADER": {
     "signin": "Войти",
-    "signup": "Зарегистрироваться"
+    "signup": "Зарегистрироваться",
+    "signout": "Выйти"
   },
   "MAIN_AUTH": {
-    "greeting": "С возвращением, {username}!",
+    "greeting": "С возвращением, {userName}!",
     "restful_link": "REST-клиент",
     "graphql_link": "GraphQL-клиент",
     "history_link": "История"
