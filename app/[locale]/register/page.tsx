@@ -1,31 +1,36 @@
 'use client';
-import { useState } from 'react';
+
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations } from 'next-intl';
+import { useRouter } from '@/navigation';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { firebaseClientAuth } from '@/lib/firebase/client/config';
 import FormLayout from '@/app/components/FormLayout';
 import FormField from '@/app/components/FormField';
+import { SignUpFormData, signUpSchema } from '@/lib/schema';
 import { PATH } from '@/constants';
 
 const Register = () => {
-  const t = useTranslations('SIGN_UP');
+  const tPage = useTranslations('SIGN_UP');
+  const tValidation = useTranslations('VALIDATION');
 
-  const [formValues, setFormValues] = useState({
-    email: '',
-    password: '',
+  const schema = signUpSchema(tValidation);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting, isValid },
+  } = useForm<SignUpFormData>({
+    resolver: zodResolver(schema),
+    mode: 'onChange',
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormValues((prevValues) => ({
-      ...prevValues,
-      [name]: value,
-    }));
-    console.log(value);
-  };
+  const router = useRouter();
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const onSubmit: SubmitHandler<SignUpFormData> = async (formValues: SignUpFormData) => {
+    await Promise.resolve(true);
+
     console.log('Form submitted with values:', formValues);
     createUserWithEmailAndPassword(firebaseClientAuth, formValues.email, formValues.password)
       .then((userCredential) => {
@@ -35,55 +40,68 @@ const Register = () => {
       .catch((error) => {
         console.log(error);
       });
+
+    router.push(PATH.MAIN);
+  };
+
+  const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    void handleSubmit(onSubmit)(event);
   };
 
   return (
     <FormLayout
-      title={t('title')}
-      buttonText={t('signup_btn')}
-      buttonHref={PATH.MAIN}
-      linkText={t('signin_link')}
+      title={tPage('title')}
+      buttonText={tPage('signup_btn')}
+      buttonDisabled={!isValid || isSubmitting}
+      onSubmit={handleFormSubmit}
+      linkText={tPage('signin_link')}
       linkHref={PATH.LOGIN}
-      linkDescription={t('descr')}
-      type="submit"
-      onSubmit={handleSubmit}
+      linkDescription={tPage('descr')}
     >
       <FormField
-        label={t('username_label')}
+        label={tPage('username_label')}
         type="text"
-        name="username"
         id="username"
-        placeholder={t('username_label')}
+        placeholder={tPage('username_label')}
         required
+        autoComplete="username"
+        {...register('userName')}
       />
+      {errors.userName && <p className="text-red-500">{errors.userName.message}</p>}
+
       <FormField
-        label={t('email_label')}
+        label={tPage('email_label')}
         type="email"
-        name="email"
         id="email"
         placeholder="name@example.com"
         required
-        value={formValues.email}
-        onChange={handleChange}
+        autoComplete="email"
+        {...register('email')}
       />
+      {errors.email && <p className="text-red-500">{errors.email.message}</p>}
+
       <FormField
-        label={t('psw_label')}
+        label={tPage('psw_label')}
         type="password"
-        name="password"
         id="password"
         placeholder="••••••••"
         required
-        value={formValues.password}
-        onChange={handleChange}
+        autoComplete="new-password"
+        {...register('password')}
       />
+      {errors.password && <p className="text-red-500">{errors.password.message}</p>}
+
       <FormField
-        label={t('confirm_psw_label')}
+        label={tPage('confirm_psw_label')}
         type="password"
-        name="confirm-password"
         id="confirm-password"
         placeholder="••••••••"
         required
+        autoComplete="new-password"
+        {...register('confirmPassword')}
       />
+      {errors.confirmPassword && <p className="text-red-500">{errors.confirmPassword.message}</p>}
     </FormLayout>
   );
 };

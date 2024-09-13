@@ -15,3 +15,5 @@ export const signInSchema = (t: ReturnType<typeof useTranslations<'VALIDATION'>>
       .regex(/\P{L}\P{N}/u, { message: t('password-must-contain-special') })
       .trim(),
   });
+
+export type SignInFormData = z.infer<ReturnType<typeof signInSchema>>;

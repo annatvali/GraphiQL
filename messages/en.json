@@ -31,6 +31,7 @@
     "descr": "Don’t have an account yet?",
     "email_label": "Email",
     "psw_label": "Password",
+    "login_duration": "You will stay signed in for 1 hour. Please log in again after this time expires.",
     "remember_label": "Remember me",
     "forgot_psw": "Forgot password?"
   },
