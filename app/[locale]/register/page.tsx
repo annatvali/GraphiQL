@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../../../lib/firebase';
+import { auth } from '@/lib/firebase/client/config';
 import FormLayout from '@/app/components/FormLayout';
 import FormField from '@/app/components/FormField';
 import { PATH } from '@/constants';
