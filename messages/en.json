@@ -39,8 +39,7 @@
     "signup_btn": "Sign up",
     "signin_link": "Sign in",
     "descr": "Already have an account?",
-    "fname_label": "First Name",
-    "lname_label": "Last Name",
+    "username_label": "Username",
     "email_label": "Email",
     "psw_label": "Password",
     "confirm_psw_label": "Confirm Password"
