@@ -7,7 +7,7 @@ const HistoryPage: React.FC = () => {
   return (
     <div className="flex flex-col max-w-screen-xl px-4 mx-auto pt-16">
       <h1 className="color-white text-6xl font-medium">{t('title')}</h1>
-      <p>Content for History goes here.</p>
+      <p>{t('description')}</p>
     </div>
   );
 };

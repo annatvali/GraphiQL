@@ -12,7 +12,7 @@
   },
   "MAIN_UNAUTH": {
     "greeting": "Welcome to API Nexus",
-    "descr": "A powerful tool for testing and interacting with your APIs.",
+    "descr": "A powerful tool for testing and interacting with your APIs. Please sign in or register to continue.",
     "signin_link": "Sign In",
     "signup_link": "Sign Up"
   },
@@ -47,13 +47,16 @@
     "confirm_psw_label": "Confirm Password"
   },
   "RESTFUL_CLIENT": {
-    "title": "RESTful Client"
+    "title": "RESTful Client",
+    "description": "Explore and interact with RESTful APIs."
   },
   "GRAPHQL_CLIENT": {
-    "title": "GraphQL Client"
+    "title": "GraphQL Client",
+    "description": "Explore and interact with GraphQL APIs."
   },
   "HISTORY": {
-    "title": "History"
+    "title": "History",
+    "description": "View the history of your interactions and changes."
   },
   "NOT_FOUND": {
     "title": "404 - Not Found",
