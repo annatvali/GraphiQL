@@ -1,14 +1,19 @@
-import { initializeApp } from 'firebase/app';
+import { initializeApp, getApps } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
-const firebaseConfig = {
-  apiKey: 'AIzaSyBEKJ9UDUOC6Hx9ZnxD8aX4e12Y9JKbPOQ',
-  authDomain: 'graphiql-app-eecfd.firebaseapp.com',
-  projectId: 'graphiql-app-eecfd',
-  storageBucket: 'graphiql-app-eecfd.appspot.com',
-  messagingSenderId: '36749421826',
-  appId: '1:36749421826:web:c6a9bb3446a79e89fee61b',
-  measurementId: 'G-TPJEPPTXM5',
+
+const firebaseClientConfig = {
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app);
+const firebaseClientApp =
+  getApps().find((app) => app.name === 'firebase-client-app') ??
+  initializeApp(firebaseClientConfig, 'firebase-client-app');
+
+export const firebaseClientAuth = getAuth(firebaseClientApp);
+
+export default firebaseClientApp;

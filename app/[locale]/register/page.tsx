@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '@/lib/firebase/client/config';
+import { firebaseClientAuth } from '@/lib/firebase/client/config';
 import FormLayout from '@/app/components/FormLayout';
 import FormField from '@/app/components/FormField';
 import { PATH } from '@/constants';
@@ -27,7 +27,7 @@ const Register = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log('Form submitted with values:', formValues);
-    createUserWithEmailAndPassword(auth, formValues.email, formValues.password)
+    createUserWithEmailAndPassword(firebaseClientAuth, formValues.email, formValues.password)
       .then((userCredential) => {
         const user = userCredential.user;
         console.log(user);
