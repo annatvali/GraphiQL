@@ -5,9 +5,31 @@ import { useAuth } from '@/app/hooks';
 import { signIn, signUp, signOut } from '@/lib/firebase/client/auth';
 import Main from '@/app/[locale]/page';
 
-vi.mock('@/app/hooks');
-vi.mock('@/lib/firebase/client/auth');
-vi.mock('firebase/auth');
+vi.mock('@/lib/firebase/client/auth', async () => {
+  const original = await vi.importActual('@/lib/firebase/client/auth');
+
+  return {
+    ...original,
+    signIn: vi.fn(),
+    signUp: vi.fn(),
+    signOut: vi.fn(),
+  };
+});
+
+vi.mock('@/app/hooks', () => {
+  return {
+    useAuth: vi.fn(),
+  };
+});
+
+vi.mock('firebase/auth', async () => {
+  const original = await vi.importActual('firebase/auth');
+
+  return {
+    ...original,
+    getAuth: vi.fn(),
+  };
+});
 
 vi.mock('next-intl', () => ({
   useTranslations: vi.fn().mockReturnValue((key: string) => key),
