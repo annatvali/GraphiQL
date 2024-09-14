@@ -70,7 +70,7 @@ const locale = 'en';
 beforeAll(async () => {
   const messages = (await import('@/messages/en.json')).default;
 
-  const { SIGN_UP, VALIDATION } = messages;
+  const { SIGN_UP, VALIDATION, ERRORS } = messages;
 
   const mockSignUpTranslations = {
     SIGN_UP: {
@@ -96,10 +96,18 @@ beforeAll(async () => {
     },
   };
 
+  const mockErrorTranslations = {
+    ERRORS: {
+      ...ERRORS,
+      'auth/email-already-exists': 'This email is already in use',
+    },
+  };
+
   mockMessages = {
     ...messages,
     ...mockSignUpTranslations,
     ...mockValidationTranslations,
+    ...mockErrorTranslations,
   };
 });
 
@@ -211,5 +219,55 @@ describe('Register', () => {
     );
 
     expect(replaceMock).toHaveBeenCalledWith(PATH.MAIN);
+  });
+
+  it('sets error state when signUp returns no data', async () => {
+    const mockError = { code: 'auth/email-already-exists', message: 'This email is already in use' };
+    const signUpMock = vi.fn().mockResolvedValueOnce({
+      data: null,
+      error: mockError,
+    });
+
+    vi.mocked(useAuth).mockReturnValue({
+      user: null,
+      setUser: vi.fn(),
+      signIn,
+      signUp: signUpMock,
+      signOut,
+    });
+
+    const user = userEvent.setup();
+
+    render(
+      <NextIntlClientProvider locale={locale} messages={mockMessages}>
+        <Register />
+      </NextIntlClientProvider>
+    );
+
+    const usernameInput = await screen.findByLabelText(/Username/i);
+    const emailInput = screen.getByLabelText(/Email/i);
+    const passwordInput = screen.getByLabelText(/^Password/i);
+    const confirmPasswordInput = screen.getByLabelText(/Confirm Password/i);
+    const signUpButton = screen.getByRole('button', { name: /Sign Up/i });
+
+    await user.type(usernameInput, 'testuser');
+    await user.type(emailInput, 'test@example.com');
+    await user.type(passwordInput, 'Password123!');
+    await user.type(confirmPasswordInput, 'Password123!');
+
+    await user.click(signUpButton);
+
+    await waitFor(() => {
+      expect(useAuth().signUp).toHaveBeenCalledWith({
+        userName: 'testuser',
+        email: 'test@example.com',
+        password: 'Password123!',
+      });
+    });
+
+    const errorMessage = await screen.findByText(/This email is already in use/i);
+    expect(errorMessage).toBeInTheDocument();
+
+    expect(useAuth().setUser).not.toHaveBeenCalled();
   });
 });

@@ -71,7 +71,7 @@ const locale = 'en';
 beforeAll(async () => {
   const messages = (await import('@/messages/en.json')).default;
 
-  const { SIGN_IN, VALIDATION } = messages;
+  const { SIGN_IN, VALIDATION, ERRORS } = messages;
 
   const mockSignInTranslations = {
     SIGN_IN: {
@@ -93,10 +93,18 @@ beforeAll(async () => {
     },
   };
 
+  const mockErrorTranslations = {
+    ERRORS: {
+      ...ERRORS,
+      'auth/invalid-credential': 'Your credentials are invalid or expired',
+    },
+  };
+
   mockMessages = {
     ...messages,
     ...mockSignInTranslations,
     ...mockValidationTranslations,
+    ...mockErrorTranslations,
   };
 });
 
@@ -190,5 +198,54 @@ describe('Login', () => {
     );
 
     expect(replaceMock).toHaveBeenCalledWith(PATH.MAIN);
+  });
+
+  it('sets error state when signIn returns no data', async () => {
+    const mockError = {
+      name: 'AppError',
+      code: 'auth/invalid-credential',
+      message: 'Your credentials are invalid or expired',
+    };
+    const signInMock = vi.fn().mockResolvedValueOnce({
+      data: null,
+      error: mockError,
+    });
+
+    vi.mocked(useAuth).mockReturnValue({
+      user: null,
+      setUser: vi.fn(),
+      signIn: signInMock,
+      signUp,
+      signOut,
+    });
+
+    const user = userEvent.setup();
+
+    render(
+      <NextIntlClientProvider locale={locale} messages={mockMessages}>
+        <Login />
+      </NextIntlClientProvider>
+    );
+
+    const emailInput = screen.getByLabelText(/Email/i);
+    const passwordInput = screen.getByLabelText(/Password/i);
+    const signInButton = screen.getByRole('button', { name: /Sign In/i });
+
+    await user.type(emailInput, 'test@example.com');
+    await user.type(passwordInput, 'Password123!');
+
+    await user.click(signInButton);
+
+    await waitFor(() => {
+      expect(useAuth().signIn).toHaveBeenCalledWith({
+        email: 'test@example.com',
+        password: 'Password123!',
+      });
+    });
+
+    const errorMessage = await screen.findByText(/Your credentials are invalid or expired/i);
+    expect(errorMessage).toBeInTheDocument();
+
+    expect(useAuth().setUser).not.toHaveBeenCalled();
   });
 });
