@@ -1,8 +1,7 @@
 import { NextResponse } from 'next/server';
-import { FirebaseError } from 'firebase/app';
-import { AuthStatusResponse } from '@/types';
+import { AppError, AuthStatusResponse } from '@/types';
 import { isUserAuthenticated } from '@/lib/firebase/server';
-import { isAuthError } from '@/utils/guards';
+import { isAppError } from '@/utils/guards';
 import { APP_ERROR_CODE, HTTP_STATUS_CODE } from '@/constants';
 
 export const GET = async (): Promise<NextResponse<AuthStatusResponse>> => {
@@ -21,9 +20,7 @@ export const GET = async (): Promise<NextResponse<AuthStatusResponse>> => {
       { status: statusCode }
     );
   } catch (err) {
-    const error = isAuthError(err)
-      ? err
-      : new FirebaseError(APP_ERROR_CODE.UNKNOWN_ERROR, 'Failed to check user status.');
+    const error = isAppError(err) ? err : new AppError(APP_ERROR_CODE.UNKNOWN_ERROR, 'Failed to check user status.');
 
     return NextResponse.json<AuthStatusResponse>(
       {

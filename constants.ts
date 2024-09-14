@@ -20,14 +20,16 @@ export const API_ROUTE = {
 
 export const SESSION_COOKIE = {
   NAME: 'user_session',
-  MAX_AGE_SECONDS: 60 * 60,
+  MAX_AGE_SECONDS: 24 * 60 * 60,
 } as const;
 
 export const APP_ERROR_CODE = {
+  UNEXPECTED_APP_ERROR: 'app/unexpected-app-error',
+  UNEXPECTED_FIREBASE_ERROR: 'app/unexpected-firebase-error',
   UNKNOWN_ERROR: 'app/unknown-error',
   USER_NOT_FOUND: 'app/user-not-found',
   SESSION_NOT_FOUND: 'app/session-not-found',
-};
+} as const;
 
 export const HTTP_STATUS_CODE = {
   OK: 200,

@@ -1,9 +1,8 @@
 import { NextResponse } from 'next/server';
 import { getSessionCookie, deleteSessionCookie } from '@/lib/cookies';
 import { revokeRefreshTokens } from '@/lib/firebase/server';
-import { FirebaseError } from 'firebase/app';
-import { SignOutResponse } from '@/types';
-import { isAuthError } from '@/utils/guards';
+import { AppError, SignOutResponse } from '@/types';
+import { isAppError } from '@/utils/guards';
 import { APP_ERROR_CODE, HTTP_STATUS_CODE, SESSION_COOKIE } from '@/constants';
 
 export const GET = async (): Promise<NextResponse<SignOutResponse>> => {
@@ -11,7 +10,7 @@ export const GET = async (): Promise<NextResponse<SignOutResponse>> => {
     const sessionCookie = getSessionCookie();
 
     if (!sessionCookie) {
-      throw new FirebaseError(APP_ERROR_CODE.SESSION_NOT_FOUND, 'Session not found.');
+      throw new AppError(APP_ERROR_CODE.SESSION_NOT_FOUND, 'Session not found.');
     }
 
     deleteSessionCookie();
@@ -33,9 +32,9 @@ export const GET = async (): Promise<NextResponse<SignOutResponse>> => {
 
     return response;
   } catch (err) {
-    const error = isAuthError(err)
+    const error = isAppError(err)
       ? err
-      : new FirebaseError(APP_ERROR_CODE.UNKNOWN_ERROR, 'An unexpected error occurred during logout.');
+      : new AppError(APP_ERROR_CODE.UNKNOWN_ERROR, 'An unexpected error occurred during logout.');
 
     return NextResponse.json<SignOutResponse>({ data: null, error }, { status: HTTP_STATUS_CODE.BAD_REQUEST });
   }

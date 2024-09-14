@@ -1,9 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { FirebaseError } from 'firebase/app';
-import { SignInResponse } from '@/types';
+import { SignInResponse, AppError } from '@/types';
 import { setSessionCookie } from '@/lib/cookies';
 import { createSessionCookie, getCurrentUser } from '@/lib/firebase/server';
-import { isAuthError } from '@/utils/guards';
+import { isAppError } from '@/utils/guards';
 import { APP_ERROR_CODE, HTTP_STATUS_CODE, SESSION_COOKIE } from '@/constants';
 import { parseBearerToken } from './parseBearerToken';
 
@@ -16,12 +15,17 @@ export const POST = async (request: NextRequest): Promise<NextResponse<SignInRes
     const expiresInMs = SESSION_COOKIE.MAX_AGE_SECONDS * 1000;
 
     const sessionCookie = await createSessionCookie(idToken, { expiresIn: expiresInMs });
+
+    if (!sessionCookie) {
+      throw new AppError(APP_ERROR_CODE.UNEXPECTED_APP_ERROR, 'Failed to create session cookie.');
+    }
+
     setSessionCookie(sessionCookie, SESSION_COOKIE.MAX_AGE_SECONDS);
 
     const user = await getCurrentUser();
 
     if (!user) {
-      throw new FirebaseError(APP_ERROR_CODE.USER_NOT_FOUND, 'Failed to retrieve user information after signing in.');
+      throw new AppError(APP_ERROR_CODE.USER_NOT_FOUND, 'Failed to retrieve user information after signing in.');
     }
 
     const response = NextResponse.json<SignInResponse>({
@@ -41,7 +45,7 @@ export const POST = async (request: NextRequest): Promise<NextResponse<SignInRes
 
     return response;
   } catch (err) {
-    const error = isAuthError(err) ? err : new FirebaseError(APP_ERROR_CODE.UNKNOWN_ERROR, 'Failed to sign in.');
+    const error = isAppError(err) ? err : new AppError(APP_ERROR_CODE.UNKNOWN_ERROR, 'Failed to sign in.');
 
     return NextResponse.json<SignInResponse>(
       {

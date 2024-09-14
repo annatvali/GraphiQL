@@ -5,7 +5,7 @@ import { NextIntlClientProvider } from 'next-intl';
 import { useRouter } from '@/navigation';
 import { useAuth } from '@/app/hooks';
 import { signIn, signUp, signOut } from '@/lib/firebase/client/auth';
-import { PATH, SESSION_COOKIE } from '@/constants';
+import { PATH } from '@/constants';
 import Login from '@/app/[locale]/login/page';
 
 vi.mock('@/lib/firebase/client/auth', async () => {
@@ -73,7 +73,6 @@ beforeAll(async () => {
       descr: 'Don’t have an account?',
       email_label: 'Email',
       psw_label: 'Password',
-      login_duration: `Session duration: ${Math.floor(SESSION_COOKIE.MAX_AGE_SECONDS / 3600)} hour`,
     },
   };
 

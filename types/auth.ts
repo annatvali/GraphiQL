@@ -1,7 +1,4 @@
-export interface AuthError {
-  code: string;
-  message: string;
-}
+import { AppError } from './AppError';
 
 export interface AuthUser {
   readonly uid: string;
@@ -10,7 +7,7 @@ export interface AuthUser {
 }
 
 interface AuthResponse<TData> {
-  error: AuthError | null;
+  error: AppError | null;
   data: TData | null;
 }
 

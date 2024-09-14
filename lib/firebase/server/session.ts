@@ -1,4 +1,7 @@
 import { SessionCookieOptions } from 'firebase-admin/auth';
+import { AppError } from '@/types';
+import { rethrowError } from '@/utils';
+import { APP_ERROR_CODE } from '@/constants';
 import { firebaseAdminAuth } from './config';
 
 const recentLoginThresholdSeconds = 5 * 60;
@@ -6,7 +9,7 @@ const recentLoginThresholdSeconds = 5 * 60;
 export const createSessionCookie = async (
   idToken: string,
   sessionCookieOptions: SessionCookieOptions
-): Promise<string> => {
+): Promise<string | null> => {
   try {
     const decodedIdToken = await firebaseAdminAuth.verifyIdToken(idToken);
 
@@ -15,19 +18,22 @@ export const createSessionCookie = async (
     if (timeNowSeconds - decodedIdToken.auth_time >= recentLoginThresholdSeconds) {
       await firebaseAdminAuth.revokeRefreshTokens(decodedIdToken.sub);
 
-      throw new Error('Recent sign-in required');
+      throw new AppError(APP_ERROR_CODE.UNEXPECTED_APP_ERROR, 'Recent sign-in required');
     }
 
     return await firebaseAdminAuth.createSessionCookie(idToken, sessionCookieOptions);
-  } catch (err) {
-    const error = err instanceof Error ? err : new Error('Failed to create session cookie.');
-
-    throw error;
+  } catch (error) {
+    rethrowError(error, { fallbackMessage: 'Failed to create session cookie.' });
+    return null;
   }
 };
 
 export const revokeRefreshTokens = async (sessionCookie: string): Promise<void> => {
-  const decodedIdToken = await firebaseAdminAuth.verifySessionCookie(sessionCookie);
+  try {
+    const decodedIdToken = await firebaseAdminAuth.verifySessionCookie(sessionCookie);
 
-  return await firebaseAdminAuth.revokeRefreshTokens(decodedIdToken.sub);
+    return await firebaseAdminAuth.revokeRefreshTokens(decodedIdToken.sub);
+  } catch (error) {
+    rethrowError(error, { fallbackMessage: 'Failed to revoke refresh tokens.' });
+  }
 };

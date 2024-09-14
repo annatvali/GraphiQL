@@ -1,15 +1,28 @@
 import { FirebaseError } from 'firebase/app';
-import { TranslationValues } from 'next-intl';
+import { useTranslations } from 'next-intl';
+import { AppError } from '@/types';
+import { APP_ERROR_CODE } from '@/constants';
 
-export const getFirebaseErrorMessage = (
-  error: FirebaseError,
-  t: (key: string, values?: TranslationValues) => string
+type ErrorKeys = keyof IntlMessages['ERRORS'];
+
+export const getErrorMessage = (
+  error: FirebaseError | AppError,
+  t: ReturnType<typeof useTranslations<'ERRORS'>>
 ): string => {
-  const errorCode = error.code;
-  const translatedMessage = t(errorCode);
+  const { code: errorCode, message: errorMsg } = error;
+
+  if (errorCode === APP_ERROR_CODE.UNEXPECTED_APP_ERROR) {
+    const errorMessage = errorMsg ? ` (${errorMsg})` : '';
+
+    return t(APP_ERROR_CODE.UNEXPECTED_APP_ERROR, { errorMessage });
+  }
+
+  const translatedMessage = t(errorCode as ErrorKeys);
 
   if (translatedMessage === errorCode) {
-    return t('app/unknown-error', { errorCode: ` (${errorCode})` });
+    const errorMessage = errorCode ? ` (${errorCode})` : '';
+
+    return t(APP_ERROR_CODE.UNEXPECTED_FIREBASE_ERROR, { errorMessage });
   }
 
   return translatedMessage;

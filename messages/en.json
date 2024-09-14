@@ -32,7 +32,6 @@
     "descr": "Don’t have an account yet?",
     "email_label": "Email",
     "psw_label": "Password",
-    "login_duration": "You will stay signed in for {sessionDurationHours, plural, =1 {1 hour} other {# hours}}. Please log in again after this time expires.",
     "remember_label": "Remember me",
     "forgot_psw": "Forgot password?"
   },
@@ -90,7 +89,11 @@
     "passwords-must-match": "Passwords do not match."
   },
   "ERRORS": {
-    "app/unknown-error": "An unexpected error occurred{errorCode}. Please try again.",
+    "app/unexpected-app-error": "Something went wrong unexpectedly{errorMessage}. Please try again.",
+    "app/unexpected-firebase-error": "A system error occurred{errorMessage}. Please try again later.",
+    "app/unknown-error": "We encountered an unknown issue. Please try again later.",
+    "app/user-not-found": "We couldn't find your account information.",
+    "app/session-not-found": "Your session has expired or couldn't be found.",
     "auth/email-already-exists": "This email is already in use. Please use a different email address.",
     "auth/invalid-email": "Invalid email format. Please enter a valid email address.",
     "auth/invalid-password": "Invalid password. Your password must be at least six characters long.",

@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations } from 'next-intl';
@@ -10,10 +11,13 @@ import { useAuth } from '@/app/hooks';
 import { SignUpFormData, signUpSchema } from '@/lib/schema';
 import { PATH } from '@/constants';
 import { withAuthRedirect } from '@/app/hoc';
+import { AppError } from '@/types';
+import { getErrorMessage } from '@/lib/firebase/client';
 
 const RegisterPage = () => {
   const tPage = useTranslations('SIGN_UP');
   const tValidation = useTranslations('VALIDATION');
+  const tErrors = useTranslations('ERRORS');
 
   const schema = signUpSchema(tValidation);
 
@@ -29,13 +33,24 @@ const RegisterPage = () => {
   const { signUp } = useAuth();
   const router = useRouter();
 
+  const [error, setError] = useState<AppError | null>(null);
+  const errorMessage = error ? getErrorMessage(error, tErrors) : null;
+
   const onSubmit: SubmitHandler<SignUpFormData> = async ({ userName, email, password }) => {
-    await signUp({ userName, email, password });
-    router.push(PATH.MAIN);
+    const { error } = await signUp({ userName, email, password });
+
+    if (!error) {
+      router.push(PATH.MAIN);
+      return;
+    }
+
+    setError(error);
   };
 
   const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    setError(null);
     void handleSubmit(onSubmit)(event);
   };
 
@@ -92,6 +107,7 @@ const RegisterPage = () => {
         {...register('confirmPassword')}
       />
       {errors.confirmPassword && <p className="text-red-500">{errors.confirmPassword.message}</p>}
+      {errorMessage && <p className="text-red-500">{errorMessage}</p>}
     </FormLayout>
   );
 };

@@ -1,20 +1,20 @@
 import { describe, it, expect } from 'vitest';
-import { isAuthError, isAuthUser, isSignInResponse, isSignOutResponse } from '@/utils/guards';
+import { isAppError, isAuthUser, isSignInResponse, isSignOutResponse } from '@/utils/guards';
 
 describe('Type Guards', () => {
-  describe('isAuthError', () => {
+  describe('isAppError', () => {
     it('should return true for valid AuthError objects', () => {
       const validError = { code: 'auth/invalid-email', message: 'Invalid email' };
-      expect(isAuthError(validError)).toBe(true);
+      expect(isAppError(validError)).toBe(true);
     });
 
     it('should return false for invalid AuthError objects', () => {
-      expect(isAuthError({ code: 'auth/invalid-email' })).toBe(false);
-      expect(isAuthError({ message: 'Invalid email' })).toBe(false);
-      expect(isAuthError({ code: 123, message: 'Invalid email' })).toBe(false);
-      expect(isAuthError({ code: 'auth/invalid-email', message: 123 })).toBe(false);
-      expect(isAuthError(null)).toBe(false);
-      expect(isAuthError(undefined)).toBe(false);
+      expect(isAppError({ code: 'auth/invalid-email' })).toBe(false);
+      expect(isAppError({ message: 'Invalid email' })).toBe(false);
+      expect(isAppError({ code: 123, message: 'Invalid email' })).toBe(false);
+      expect(isAppError({ code: 'auth/invalid-email', message: 123 })).toBe(false);
+      expect(isAppError(null)).toBe(false);
+      expect(isAppError(undefined)).toBe(false);
     });
   });
 

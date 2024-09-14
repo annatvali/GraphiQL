@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations } from 'next-intl';
@@ -8,14 +9,15 @@ import FormLayout from '@/app/components/FormLayout';
 import FormField from '@/app/components/FormField';
 import { useAuth } from '@/app/hooks';
 import { SignInFormData, signInSchema } from '@/lib/schema';
-import { PATH, SESSION_COOKIE } from '@/constants';
 import { withAuthRedirect } from '@/app/hoc';
-
-const sessionDurationHours = Math.floor(SESSION_COOKIE.MAX_AGE_SECONDS / 3600);
+import { PATH } from '@/constants';
+import { AppError } from '@/types';
+import { getErrorMessage } from '@/lib/firebase/client';
 
 const LoginPage = () => {
   const tPage = useTranslations('SIGN_IN');
   const tValidation = useTranslations('VALIDATION');
+  const tErrors = useTranslations('ERRORS');
 
   const schema = signInSchema(tValidation);
 
@@ -31,13 +33,24 @@ const LoginPage = () => {
   const { signIn } = useAuth();
   const router = useRouter();
 
+  const [error, setError] = useState<AppError | null>(null);
+  const errorMessage = error ? getErrorMessage(error, tErrors) : null;
+
   const onSubmit: SubmitHandler<SignInFormData> = async (data) => {
-    await signIn(data);
-    router.push(PATH.MAIN);
+    const { error } = await signIn(data);
+
+    if (!error) {
+      router.push(PATH.MAIN);
+      return;
+    }
+
+    setError(error);
   };
 
   const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    setError(null);
     void handleSubmit(onSubmit)(event);
   };
 
@@ -72,10 +85,7 @@ const LoginPage = () => {
         {...register('password')}
       />
       {errors.password && <p className="text-red-500">{errors.password.message}</p>}
-
-      <div className="flex justify-center ml-3 text-sm">
-        <p className="text-gray-500 dark:text-gray-300">{tPage('login_duration', { sessionDurationHours })}</p>
-      </div>
+      {errorMessage && <p className="text-red-500">{errorMessage}</p>}
     </FormLayout>
   );
 };

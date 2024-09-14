@@ -1,6 +1,7 @@
 import { UserRecord } from 'firebase-admin/auth';
 import { getSessionCookie } from '@/lib/cookies';
 import { AuthUser } from '@/types';
+import { rethrowError } from '@/utils';
 import { firebaseAdminAuth } from './config';
 
 const mapUserRecordToAuthUser = ({ uid, email, displayName }: UserRecord): AuthUser => ({
@@ -18,7 +19,8 @@ const getVerifiedUserUid = async (): Promise<string | null> => {
     const decodedIdToken = await firebaseAdminAuth.verifySessionCookie(sessionCookie, true);
 
     return decodedIdToken.uid;
-  } catch {
+  } catch (error) {
+    rethrowError(error, { fallbackMessage: 'Failed to verify session cookie.' });
     return null;
   }
 };
@@ -32,15 +34,21 @@ export const getCurrentUser = async (): Promise<AuthUser | null> => {
     const currentUser = await firebaseAdminAuth.getUser(uid);
 
     return mapUserRecordToAuthUser(currentUser);
-  } catch {
+  } catch (error) {
+    rethrowError(error, { fallbackMessage: 'Failed to get user data.' });
     return null;
   }
 };
 
 export const isUserAuthenticated = async (): Promise<boolean> => {
-  const uid = await getVerifiedUserUid();
+  try {
+    const uid = await getVerifiedUserUid();
 
-  return !!uid;
+    return !!uid;
+  } catch (error) {
+    rethrowError(error, { fallbackMessage: 'Failed to get user status.' });
+    return false;
+  }
 };
 
 export const getUserByUid = async (userUid: string): Promise<AuthUser | null> => {
@@ -50,7 +58,8 @@ export const getUserByUid = async (userUid: string): Promise<AuthUser | null> =>
     const userRecord = await firebaseAdminAuth.getUser(userUid);
 
     return mapUserRecordToAuthUser(userRecord);
-  } catch {
+  } catch (error) {
+    rethrowError(error, { fallbackMessage: 'Failed to get user by uid.' });
     return null;
   }
 };
