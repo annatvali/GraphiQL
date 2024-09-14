@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { locales } from '@/i18n.config';
+import { isAuthStatusResponse } from '@/utils/guards';
 import { API_ROUTE, HTTP_STATUS_CODE, PATH, ROUTES, SESSION_COOKIE } from '@/constants';
 
 const localePrefix = locales.join('|');
@@ -11,6 +12,10 @@ export const authMiddleware = async (request: NextRequest) => {
   const pathname = url.pathname;
 
   const pathWithoutLocale = pathname.replace(localePrefixRegex, '/');
+
+  if (pathWithoutLocale === PATH.MAIN) {
+    return;
+  }
 
   const sessionCookie = request.cookies.get(SESSION_COOKIE.NAME);
 
@@ -27,7 +32,15 @@ export const authMiddleware = async (request: NextRequest) => {
     },
   });
 
-  const isAuthenticated = authResponse.status === HTTP_STATUS_CODE.OK;
+  const dataResponse: unknown = await authResponse.json();
+
+  if (authResponse.status !== HTTP_STATUS_CODE.OK || !isAuthStatusResponse(dataResponse)) {
+    url.pathname = PATH.MAIN;
+    return NextResponse.redirect(url);
+  }
+
+  const { data } = dataResponse;
+  const isAuthenticated = data?.isLoggedIn ?? false;
 
   if (
     (!isAuthenticated && ROUTES.PROTECTED.includes(pathWithoutLocale)) ||
@@ -37,5 +50,5 @@ export const authMiddleware = async (request: NextRequest) => {
     return NextResponse.redirect(url);
   }
 
-  return undefined;
+  return;
 };

@@ -8,8 +8,6 @@ export const GET = async (): Promise<NextResponse<AuthStatusResponse>> => {
   try {
     const isLoggedIn = await isUserAuthenticated();
 
-    const statusCode = isLoggedIn ? HTTP_STATUS_CODE.OK : HTTP_STATUS_CODE.UNAUTHORIZED;
-
     return NextResponse.json<AuthStatusResponse>(
       {
         error: null,
@@ -17,17 +15,17 @@ export const GET = async (): Promise<NextResponse<AuthStatusResponse>> => {
           isLoggedIn,
         },
       },
-      { status: statusCode }
+      { status: HTTP_STATUS_CODE.OK }
     );
   } catch (err) {
     const error = isAppError(err) ? err : new AppError(APP_ERROR_CODE.UNKNOWN_ERROR, 'Failed to check user status.');
 
     return NextResponse.json<AuthStatusResponse>(
       {
-        error,
+        error: { ...error, message: error.message },
         data: null,
       },
-      { status: HTTP_STATUS_CODE.BAD_REQUEST }
+      { status: HTTP_STATUS_CODE.OK }
     );
   }
 };

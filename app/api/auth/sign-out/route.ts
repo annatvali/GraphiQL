@@ -36,6 +36,9 @@ export const GET = async (): Promise<NextResponse<SignOutResponse>> => {
       ? err
       : new AppError(APP_ERROR_CODE.UNKNOWN_ERROR, 'An unexpected error occurred during logout.');
 
-    return NextResponse.json<SignOutResponse>({ data: null, error }, { status: HTTP_STATUS_CODE.BAD_REQUEST });
+    return NextResponse.json<SignOutResponse>(
+      { data: null, error: { ...error, message: error.message } },
+      { status: HTTP_STATUS_CODE.OK }
+    );
   }
 };

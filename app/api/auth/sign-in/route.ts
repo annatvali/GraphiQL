@@ -49,10 +49,10 @@ export const POST = async (request: NextRequest): Promise<NextResponse<SignInRes
 
     return NextResponse.json<SignInResponse>(
       {
-        error,
+        error: { ...error, message: error.message },
         data: null,
       },
-      { status: HTTP_STATUS_CODE.BAD_REQUEST }
+      { status: HTTP_STATUS_CODE.OK }
     );
   }
 };
