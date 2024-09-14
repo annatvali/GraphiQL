@@ -12,7 +12,7 @@ import { API_ROUTE, APP_ERROR_CODE } from '@/constants';
 import { firebaseClientAuth } from './config';
 import { rethrowError } from '@/utils';
 
-const verifyUser = async (user: User): Promise<SignInResponse> => {
+export const verifyUser = async (user: User): Promise<SignInResponse> => {
   try {
     const idToken = await user.getIdToken();
 
