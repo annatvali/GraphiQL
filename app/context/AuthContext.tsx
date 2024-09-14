@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useEffect, useState, ReactNode, useCallback } from 'react';
+import { createContext, useEffect, useState, ReactNode, useCallback, Dispatch, SetStateAction } from 'react';
 import { onIdTokenChanged, User } from 'firebase/auth';
 import { firebaseClientAuth } from '@/lib/firebase/client/config';
 import { AuthUser } from '@/types';
@@ -8,6 +8,7 @@ import { getAuthStatus, signOutServer } from '@/lib/firebase/client';
 
 interface AuthContextType {
   user: AuthUser | null;
+  setUser: Dispatch<SetStateAction<AuthUser | null>>;
 }
 
 interface AuthContextProviderProps {
@@ -17,9 +18,7 @@ interface AuthContextProviderProps {
 
 const authCheckIntervalSeconds = 60;
 
-const mapUserToAuthUser = ({ uid, email, displayName }: User): AuthUser => ({ uid, email, userName: displayName });
-
-export const AuthContext = createContext<AuthContextType>({ user: null });
+export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthContextProvider = ({ children, user: initialUser = null }: AuthContextProviderProps) => {
   const [user, setUser] = useState<AuthUser | null>(initialUser);
@@ -37,10 +36,9 @@ export const AuthContextProvider = ({ children, user: initialUser = null }: Auth
   }, []);
 
   const handleUserChange = useCallback(async (currentUser: User | null) => {
-    setUser(currentUser ? mapUserToAuthUser(currentUser) : null);
-
     if (!currentUser) {
       try {
+        setUser(null);
         await signOutServer();
       } catch {
         return;
@@ -64,5 +62,5 @@ export const AuthContextProvider = ({ children, user: initialUser = null }: Auth
     }
   }, [user, checkUserStatus]);
 
-  return <AuthContext.Provider value={{ user }}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{ user, setUser }}>{children}</AuthContext.Provider>;
 };

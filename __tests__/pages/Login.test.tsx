@@ -10,21 +10,30 @@ import Login from '@/app/[locale]/login/page';
 
 vi.mock('@/lib/firebase/client/auth', async () => {
   const original = await vi.importActual('@/lib/firebase/client/auth');
+  const signInMock = vi.fn().mockResolvedValue({
+    data: { user: { uid: '123', userName: 'Test User', email: 'test@test.com' } },
+    error: null,
+  });
 
   return {
     ...original,
-    signIn: vi.fn(),
+    signIn: signInMock,
     signUp: vi.fn(),
     signOut: vi.fn(),
+    setUser: vi.fn(),
   };
 });
 
 vi.mock('@/app/hooks', () => {
-  const signInMock = vi.fn().mockResolvedValue({ uid: '123', userName: 'Test User', email: 'test@test.com' });
+  const signInMock = vi.fn().mockResolvedValue({
+    data: { user: { uid: '123', userName: 'Test User', email: 'test@test.com' } },
+    error: null,
+  });
 
   return {
     useAuth: vi.fn(() => ({
       signIn: signInMock,
+      setUser: vi.fn(),
     })),
   };
 });
@@ -93,7 +102,7 @@ beforeAll(async () => {
 
 describe('Login', () => {
   it('renders form with fields and translations when not logged in', () => {
-    vi.mocked(useAuth).mockReturnValue({ user: null, signIn, signUp, signOut });
+    vi.mocked(useAuth).mockReturnValue({ user: null, setUser: vi.fn(), signIn, signUp, signOut });
 
     render(
       <NextIntlClientProvider locale={locale} messages={mockMessages}>
@@ -166,6 +175,7 @@ describe('Login', () => {
   it('redirects when logged in', () => {
     vi.mocked(useAuth).mockReturnValue({
       user: { uid: '123', userName: 'Test User', email: 'test@test.com' },
+      setUser: vi.fn(),
       signIn,
       signUp,
       signOut,

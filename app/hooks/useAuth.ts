@@ -3,7 +3,13 @@ import { AuthContext } from '@/app/context';
 import { signIn, signUp, signOut } from '@/lib/firebase/client/auth';
 
 export const useAuth = () => {
-  const { user } = useContext(AuthContext);
+  const context = useContext(AuthContext);
 
-  return { user, signIn, signUp, signOut };
+  if (context === undefined) {
+    throw new Error('useAuth must be used within a AuthContextProvider');
+  }
+
+  const { user, setUser } = context;
+
+  return { user, setUser, signIn, signUp, signOut };
 };

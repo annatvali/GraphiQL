@@ -30,21 +30,23 @@ const LoginPage = () => {
     mode: 'onChange',
   });
 
-  const { signIn } = useAuth();
+  const { signIn, setUser } = useAuth();
   const router = useRouter();
 
   const [error, setError] = useState<AppError | null>(null);
   const errorMessage = error ? getErrorMessage(error, tErrors) : null;
 
-  const onSubmit: SubmitHandler<SignInFormData> = async (data) => {
-    const { error } = await signIn(data);
+  const onSubmit: SubmitHandler<SignInFormData> = async (formData) => {
+    const { data, error } = await signIn(formData);
 
-    if (!error) {
-      router.push(PATH.MAIN);
+    if (!data) {
+      setError(error);
       return;
     }
 
-    setError(error);
+    const { user } = data;
+    setUser(user);
+    router.push(PATH.MAIN);
   };
 
   const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {

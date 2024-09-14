@@ -73,6 +73,7 @@ describe('HeaderActions', () => {
   it('renders sign out button for authenticated users', () => {
     vi.mocked(useAuth).mockReturnValue({
       user: { uid: '123', userName: 'Test User', email: 'test@test.com' },
+      setUser: vi.fn(),
       signIn,
       signUp,
       signOut,
@@ -92,6 +93,7 @@ describe('HeaderActions', () => {
   it('renders sign in and sign up buttons for unauthenticated users', () => {
     vi.mocked(useAuth).mockReturnValue({
       user: null,
+      setUser: vi.fn(),
       signIn,
       signUp,
       signOut,
@@ -113,6 +115,7 @@ describe('HeaderActions', () => {
 
     vi.mocked(useAuth).mockReturnValue({
       user: { uid: '123', userName: 'Test User', email: 'test@test.com' },
+      setUser: vi.fn(),
       signIn,
       signUp,
       signOut,
@@ -140,6 +143,7 @@ describe('HeaderActions', () => {
   it('applies correct classes based on menu state when isMenuOpen is false', () => {
     vi.mocked(useAuth).mockReturnValue({
       user: { uid: '123', userName: 'Test User', email: 'test@test.com' },
+      setUser: vi.fn(),
       signIn,
       signUp,
       signOut,
@@ -159,6 +163,7 @@ describe('HeaderActions', () => {
   it('applies correct classes based on menu state when isMenuOpen is true', () => {
     vi.mocked(useAuth).mockReturnValue({
       user: { uid: '123', userName: 'Test User', email: 'test@test.com' },
+      setUser: vi.fn(),
       signIn,
       signUp,
       signOut,

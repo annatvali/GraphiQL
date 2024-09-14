@@ -75,6 +75,7 @@ describe('RestfulClientPage', () => {
   it('renders the title with the correct translation when logged in', () => {
     vi.mocked(useAuth).mockReturnValue({
       user: { uid: '123', userName: 'Test User', email: 'test@test.com' },
+      setUser: vi.fn(),
       signIn,
       signUp,
       signOut,
@@ -95,6 +96,7 @@ describe('RestfulClientPage', () => {
   it('renders the description with the correct translation when logged in', () => {
     vi.mocked(useAuth).mockReturnValue({
       user: { uid: '123', userName: 'Test User', email: 'test@test.com' },
+      setUser: vi.fn(),
       signIn,
       signUp,
       signOut,
@@ -111,7 +113,7 @@ describe('RestfulClientPage', () => {
   });
 
   it('redirects when not logged in', () => {
-    vi.mocked(useAuth).mockReturnValue({ user: null, signIn, signUp, signOut });
+    vi.mocked(useAuth).mockReturnValue({ user: null, setUser: vi.fn(), signIn, signUp, signOut });
 
     const replaceMock = useRouter().replace;
 

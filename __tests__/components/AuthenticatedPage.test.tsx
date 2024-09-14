@@ -69,6 +69,7 @@ describe('AuthenticatedPage', () => {
   it('renders the correct greeting with the user name', () => {
     vi.mocked(useAuth).mockReturnValue({
       user: { uid: '123', userName: 'Test User', email: 'test@test.com' },
+      setUser: vi.fn(),
       signIn,
       signUp,
       signOut,
@@ -86,6 +87,7 @@ describe('AuthenticatedPage', () => {
   it('renders links with correct text and href attributes', () => {
     vi.mocked(useAuth).mockReturnValue({
       user: { uid: '123', userName: 'Test User', email: 'test@test.com' },
+      setUser: vi.fn(),
       signIn,
       signUp,
       signOut,
@@ -113,6 +115,7 @@ describe('AuthenticatedPage', () => {
   it('renders default greeting when user is not logged in', () => {
     vi.mocked(useAuth).mockReturnValue({
       user: null,
+      setUser: vi.fn(),
       signIn,
       signUp,
       signOut,
@@ -130,6 +133,7 @@ describe('AuthenticatedPage', () => {
   it('applies the correct styles to the links', () => {
     vi.mocked(useAuth).mockReturnValue({
       user: { uid: '123', userName: 'Test User', email: 'test@test.com' },
+      setUser: vi.fn(),
       signIn,
       signUp,
       signOut,

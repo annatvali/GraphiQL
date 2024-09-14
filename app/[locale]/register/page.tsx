@@ -30,21 +30,23 @@ const RegisterPage = () => {
     mode: 'onChange',
   });
 
-  const { signUp } = useAuth();
+  const { signUp, setUser } = useAuth();
   const router = useRouter();
 
   const [error, setError] = useState<AppError | null>(null);
   const errorMessage = error ? getErrorMessage(error, tErrors) : null;
 
   const onSubmit: SubmitHandler<SignUpFormData> = async ({ userName, email, password }) => {
-    const { error } = await signUp({ userName, email, password });
+    const { data, error } = await signUp({ userName, email, password });
 
-    if (!error) {
-      router.push(PATH.MAIN);
+    if (!data) {
+      setError(error);
       return;
     }
 
-    setError(error);
+    const { user } = data;
+    setUser(user);
+    router.push(PATH.MAIN);
   };
 
   const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {

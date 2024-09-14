@@ -19,17 +19,25 @@ vi.mock('firebase/auth', async () => {
 
 vi.mock('@/lib/firebase/client/auth', async () => {
   const original = await vi.importActual('@/lib/firebase/client/auth');
+  const signUpMock = vi.fn().mockResolvedValue({
+    data: { user: { uid: '123', userName: 'Test User', email: 'test@test.com' } },
+    error: null,
+  });
 
   return {
     ...original,
     signIn: vi.fn(),
-    signUp: vi.fn(),
+    signUp: signUpMock,
     signOut: vi.fn(),
+    setUser: vi.fn(),
   };
 });
 
 vi.mock('@/app/hooks', () => {
-  const signUpMock = vi.fn().mockResolvedValue({ uid: '123', userName: 'Test User', email: 'test@test.com' });
+  const signUpMock = vi.fn().mockResolvedValue({
+    data: { user: { uid: '123', userName: 'Test User', email: 'test@test.com' } },
+    error: null,
+  });
 
   return {
     useAuth: vi.fn(() => ({
@@ -97,7 +105,7 @@ beforeAll(async () => {
 
 describe('Register', () => {
   it('renders form with fields and translations when not logged in', () => {
-    vi.mocked(useAuth).mockReturnValue({ user: null, signIn, signUp, signOut });
+    vi.mocked(useAuth).mockReturnValue({ user: null, setUser: vi.fn(), signIn, signUp, signOut });
 
     render(
       <NextIntlClientProvider locale={locale} messages={mockMessages}>
@@ -188,6 +196,7 @@ describe('Register', () => {
   it('redirects when logged in', () => {
     vi.mocked(useAuth).mockReturnValue({
       user: { uid: '123', userName: 'Test User', email: 'test@test.com' },
+      setUser: vi.fn(),
       signIn,
       signUp,
       signOut,

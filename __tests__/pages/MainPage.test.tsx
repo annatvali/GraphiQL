@@ -55,6 +55,7 @@ describe('Main page', () => {
   it('renders authenticated page when user is logged in', () => {
     vi.mocked(useAuth).mockReturnValue({
       user: { uid: '123', userName: 'Test User', email: '' },
+      setUser: vi.fn(),
       signIn,
       signUp,
       signOut,
@@ -67,7 +68,7 @@ describe('Main page', () => {
   });
 
   it('renders unauthenticated page when user is not logged in', () => {
-    vi.mocked(useAuth).mockReturnValue({ user: null, signIn, signUp, signOut });
+    vi.mocked(useAuth).mockReturnValue({ user: null, setUser: vi.fn(), signIn, signUp, signOut });
 
     render(Main({}));
 
@@ -76,7 +77,7 @@ describe('Main page', () => {
   });
 
   it('renders project section with correct content', () => {
-    vi.mocked(useAuth).mockReturnValue({ user: null, signIn, signUp, signOut });
+    vi.mocked(useAuth).mockReturnValue({ user: null, setUser: vi.fn(), signIn, signUp, signOut });
 
     render(Main({}));
 
@@ -86,7 +87,7 @@ describe('Main page', () => {
   });
 
   it('renders team members', () => {
-    vi.mocked(useAuth).mockReturnValue({ user: null, signIn, signUp, signOut });
+    vi.mocked(useAuth).mockReturnValue({ user: null, setUser: vi.fn(), signIn, signUp, signOut });
 
     render(Main({}));
 
@@ -95,7 +96,7 @@ describe('Main page', () => {
   });
 
   it('renders course section with correct content', () => {
-    vi.mocked(useAuth).mockReturnValue({ user: null, signIn, signUp, signOut });
+    vi.mocked(useAuth).mockReturnValue({ user: null, setUser: vi.fn(), signIn, signUp, signOut });
 
     render(Main({}));
 
