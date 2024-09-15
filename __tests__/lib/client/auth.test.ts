@@ -135,7 +135,7 @@ describe('Auth Functions', () => {
 
       expect(result).toEqual(mockResponse);
       expect(fetch).toHaveBeenCalledWith(API_ROUTE.SIGN_OUT, {
-        headers: { 'Content-Type': 'application/json' },
+        headers: new Headers({ 'Content-Type': 'application/json' }),
       });
     });
 
@@ -184,7 +184,7 @@ describe('Auth Functions', () => {
 
       expect(result).toEqual(mockResponse);
       expect(fetch).toHaveBeenCalledWith(API_ROUTE.AUTH_STATUS, {
-        headers: { 'Content-Type': 'application/json' },
+        headers: new Headers({ 'Content-Type': 'application/json' }),
       });
     });
 

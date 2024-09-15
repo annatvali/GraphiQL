@@ -4,7 +4,7 @@ import { createContext, useEffect, useState, ReactNode, useCallback, Dispatch, S
 import { onIdTokenChanged, User } from 'firebase/auth';
 import { firebaseClientAuth } from '@/lib/firebase/client/config';
 import { AuthUser } from '@/types';
-import { getAuthStatus, signOutServer } from '@/lib/firebase/client';
+import { isTokenAlmostExpired, signOut, signOutServer } from '@/lib/firebase/client';
 
 interface AuthContextType {
   user: AuthUser | null;
@@ -25,13 +25,16 @@ export const AuthContextProvider = ({ children, user: initialUser = null }: Auth
 
   const checkUserStatus = useCallback(async () => {
     try {
-      const { error } = await getAuthStatus();
+      const fbUser = firebaseClientAuth.currentUser;
+      if (!fbUser) return;
 
-      if (error) {
-        setUser(null);
+      const idToken = await fbUser.getIdToken();
+
+      if (isTokenAlmostExpired(idToken)) {
+        void signOut();
       }
     } catch {
-      setUser(null);
+      void signOut();
     }
   }, []);
 

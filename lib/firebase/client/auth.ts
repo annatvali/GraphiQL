@@ -78,9 +78,9 @@ export const signUp = async ({ userName: displayName, email, password }: SignUpR
 export const signOutServer = async (): Promise<SignOutResponse> => {
   try {
     const response = await fetch(API_ROUTE.SIGN_OUT, {
-      headers: {
+      headers: new Headers({
         'Content-Type': 'application/json',
-      },
+      }),
     });
 
     const resBody: unknown = await response.json();
@@ -126,9 +126,9 @@ export const signOut = async (): Promise<SignOutResponse> => {
 export const getAuthStatus = async (): Promise<AuthStatusResponse> => {
   try {
     const response = await fetch(API_ROUTE.AUTH_STATUS, {
-      headers: {
+      headers: new Headers({
         'Content-Type': 'application/json',
-      },
+      }),
     });
 
     const resBody: unknown = await response.json();
