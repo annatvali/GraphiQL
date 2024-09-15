@@ -1,19 +1,19 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { locales } from '@/i18n.config';
 import { isAuthStatusResponse } from '@/utils/guards';
-import { API_ROUTE, HTTP_STATUS_CODE, PATH, ROUTES, SESSION_COOKIE } from '@/constants';
-
-const localePrefix = locales.join('|');
-const localePrefixRegex = new RegExp(`^/(${localePrefix})/`);
+import {
+  API_ROUTE,
+  HTTP_STATUS_CODE,
+  PATH,
+  PROTECTED_ROUTES_REGEXP,
+  SESSION_COOKIE,
+  UNAUTHENTICATED_ROUTES_REGEXP,
+} from '@/constants';
+import { getBasePathPart } from './utils';
 
 export const authMiddleware = async (request: NextRequest) => {
   const url = request.nextUrl.clone();
-  const pathname = url.pathname;
-
-  const pathWithoutLocale = pathname.replace(localePrefixRegex, '/');
-  const parts = pathWithoutLocale.split('/');
-  const pathBasePart = parts[1];
+  const pathBasePart = getBasePathPart(url);
 
   if (pathBasePart === PATH.MAIN) {
     return;
@@ -21,7 +21,7 @@ export const authMiddleware = async (request: NextRequest) => {
 
   const sessionCookie = request.cookies.get(SESSION_COOKIE.NAME);
 
-  if (!sessionCookie && ROUTES.PROTECTED.includes(pathBasePart)) {
+  if (!sessionCookie && PROTECTED_ROUTES_REGEXP.test(pathBasePart)) {
     url.pathname = PATH.MAIN;
     return NextResponse.redirect(url);
   }
@@ -45,8 +45,8 @@ export const authMiddleware = async (request: NextRequest) => {
   const isAuthenticated = data?.isLoggedIn ?? false;
 
   if (
-    (!isAuthenticated && ROUTES.PROTECTED.includes(pathBasePart)) ||
-    (isAuthenticated && ROUTES.UNAUTHENTICATED.includes(pathBasePart))
+    (!isAuthenticated && PROTECTED_ROUTES_REGEXP.test(pathBasePart)) ||
+    (isAuthenticated && UNAUTHENTICATED_ROUTES_REGEXP.test(pathBasePart))
   ) {
     url.pathname = PATH.MAIN;
     return NextResponse.redirect(url);

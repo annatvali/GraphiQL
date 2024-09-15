@@ -1,20 +1,18 @@
 'use client';
 
-import React from 'react';
-import { useTranslations } from 'next-intl';
-import { withAuthRedirect } from '@/app/hoc';
+import { ReactNode } from 'react';
+import { HTTP_METHODS, RESTFUL_METHODS_REGEX } from '@/constants';
+import { RestfulClientPageWithAuth } from './RestfulClientPage';
+import NotFoundPage from '@/app/[locale]/not-found';
 
-const RestfulClientPage: React.FC = () => {
-  const t = useTranslations('RESTFUL_CLIENT');
+type HttpMethodKey = (typeof HTTP_METHODS)[number];
 
-  return (
-    <div className="flex flex-col max-w-screen-xl px-4 mx-auto pt-16">
-      <h1 className="color-white text-6xl font-medium">{t('title')}</h1>
-      <p>{t('description')}</p>
-    </div>
-  );
+const OtherPages = ({ params }: { params: { method: HttpMethodKey } }): ReactNode => {
+  if (!RESTFUL_METHODS_REGEX.test(params.method)) {
+    return <NotFoundPage />;
+  }
+
+  return <RestfulClientPageWithAuth params={params} />;
 };
 
-const RestfulClientPageWithAuth = withAuthRedirect(RestfulClientPage, { redirectIfLoggedIn: false });
-
-export default RestfulClientPageWithAuth;
+export default OtherPages;

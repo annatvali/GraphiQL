@@ -18,6 +18,10 @@ export const ROUTES = {
   UNAUTHENTICATED: [PATH.LOGIN, PATH.REGISTER],
 };
 
+export const PROTECTED_ROUTES_REGEXP = new RegExp(ROUTES.PROTECTED.join('|'), 'i');
+export const UNAUTHENTICATED_ROUTES_REGEXP = new RegExp(ROUTES.UNAUTHENTICATED.join('|'), 'i');
+export const RESTFUL_METHODS_REGEX = new RegExp(HTTP_METHODS.join('|'), 'i');
+
 export const API_ROUTE = {
   AUTH_STATUS: '/api/auth/status',
   SIGN_IN: '/api/auth/sign-in',

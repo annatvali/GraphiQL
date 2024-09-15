@@ -5,7 +5,7 @@ import { useAuth } from '@/app/hooks';
 import { signIn, signUp, signOut } from '@/lib/firebase/client/auth';
 import { useRouter } from '@/navigation';
 import { PATH } from '@/constants';
-import RestfulClientPage from '@/app/[locale]/[method]/page';
+import { RestfulClientPageWithAuth as RestfulClientPage } from '@/app/[locale]/[method]/RestfulClientPage';
 
 vi.mock('@/lib/firebase/client/auth', async () => {
   const original = await vi.importActual('@/lib/firebase/client/auth');
@@ -83,7 +83,7 @@ describe('RestfulClientPage', () => {
 
     render(
       <NextIntlClientProvider locale={locale} messages={mockMessages}>
-        <RestfulClientPage />
+        <RestfulClientPage params={{ method: 'GET' }} />
       </NextIntlClientProvider>
     );
 
@@ -104,7 +104,7 @@ describe('RestfulClientPage', () => {
 
     render(
       <NextIntlClientProvider locale={locale} messages={mockMessages}>
-        <RestfulClientPage />
+        <RestfulClientPage params={{ method: 'GET' }} />
       </NextIntlClientProvider>
     );
 
@@ -119,7 +119,7 @@ describe('RestfulClientPage', () => {
 
     render(
       <NextIntlClientProvider locale={locale} messages={mockMessages}>
-        <RestfulClientPage />
+        <RestfulClientPage params={{ method: 'GET' }} />
       </NextIntlClientProvider>
     );
 
