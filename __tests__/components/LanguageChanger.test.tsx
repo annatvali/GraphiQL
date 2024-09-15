@@ -1,5 +1,6 @@
-import { render, screen } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
+import { renderWithTranslations } from '@/__tests__/test-utils';
 import userEvent from '@testing-library/user-event';
 import { useRouter } from '@/navigation';
 import { LanguageChanger } from '@/app/components/LanguageChanger';
@@ -12,31 +13,65 @@ vi.mock('@/navigation', async () => {
     ...original,
     useRouter: vi.fn(() => ({
       push: pushMock,
+      replace: vi.fn(),
+      back: vi.fn(),
+      prefetch: vi.fn(),
+      query: {},
+      pathname: '/',
     })),
     usePathname: () => '/current-path',
   };
 });
 
-describe('LanguageChanger', () => {
-  it('renders dropdown with correct initial value', () => {
-    render(<LanguageChanger locale="en" closeMenu={vi.fn()} />);
+vi.mock('@/i18n.config', () => ({
+  locales: ['en', 'ru'],
+  localeNames: {
+    en: 'English',
+    ru: 'Русский',
+  },
+  localePrefix: ['en', 'ru'],
+}));
+
+const mockMessages = {
+  COMPONENTS: {
+    'dropdown-empty-label': 'Select an option',
+  },
+};
+
+describe('LanguageChanger Component', () => {
+  const closeMenu = vi.fn();
+
+  it('renders with initial locale and dropdown works', async () => {
+    const pushMock = useRouter().push;
+
+    const user = userEvent.setup();
+
+    renderWithTranslations(<LanguageChanger locale="en" closeMenu={closeMenu} />, { messages: mockMessages });
 
     expect(screen.getByText('English')).toBeInTheDocument();
-    expect(screen.getByAltText('English flag')).toBeInTheDocument();
+
+    await user.click(screen.getByRole('button'));
+
+    expect(screen.getAllByText('English')).toHaveLength(2);
+    expect(screen.getByText('Русский')).toBeVisible();
+
+    await user.click(screen.getByText('Русский'));
+
+    await waitFor(() => {
+      expect(pushMock).toHaveBeenCalledWith('/current-path', { locale: 'ru' });
+    });
+
+    expect(closeMenu).toHaveBeenCalled();
   });
 
-  it('calls handleChange and closeMenu when a new locale is selected', async () => {
-    const closeMenu = vi.fn();
-    const pushSpy = useRouter().push;
+  it('displays the correct flag images', async () => {
+    const user = userEvent.setup();
 
-    render(<LanguageChanger locale="en" closeMenu={closeMenu} />);
+    renderWithTranslations(<LanguageChanger locale="en" closeMenu={closeMenu} />, { messages: mockMessages });
 
-    await userEvent.click(screen.getByRole('button'));
+    await user.click(screen.getByRole('button'));
 
-    await userEvent.click(screen.getByText('Русский'));
-
-    expect(pushSpy).toHaveBeenCalledWith('/current-path', { locale: 'ru' });
-
-    expect(closeMenu).toHaveBeenCalledTimes(1);
+    expect(screen.getAllByAltText('English flag')).toHaveLength(2);
+    expect(screen.getByAltText('Русский flag')).toBeInTheDocument();
   });
 });

@@ -1,22 +1,44 @@
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import userEvent from '@testing-library/user-event';
-import { DropdownItem } from '@/app/components/Dropdown';
+import { DropdownItem } from '@/app/components/Dropdown/DropdownItem';
 
 describe('DropdownItem', () => {
-  it('renders correctly with the appropriate flag', () => {
-    render(<DropdownItem label="Русский" onClick={vi.fn()} />);
+  it('should render children correctly', () => {
+    render(
+      <DropdownItem onClick={() => undefined}>
+        <span>Test Label</span>
+      </DropdownItem>
+    );
 
-    expect(screen.getByAltText('Русский flag')).toBeInTheDocument();
-    expect(screen.getByText('Русский')).toBeInTheDocument();
+    expect(screen.getByText('Test Label')).toBeInTheDocument();
   });
 
-  it('calls onClick when button is clicked', async () => {
+  it('should call onClick handler when clicked', async () => {
     const handleClick = vi.fn();
-    render(<DropdownItem label="English" onClick={handleClick} />);
 
-    await userEvent.click(screen.getByText('English'));
+    const user = userEvent.setup();
+
+    render(
+      <DropdownItem onClick={handleClick}>
+        <span>Test Label</span>
+      </DropdownItem>
+    );
+
+    await user.click(screen.getByText('Test Label'));
 
     expect(handleClick).toHaveBeenCalledTimes(1);
+  });
+
+  it('should apply correct styles', () => {
+    render(
+      <DropdownItem onClick={() => undefined}>
+        <span>Styled Item</span>
+      </DropdownItem>
+    );
+
+    const item = screen.getByText('Styled Item');
+
+    expect(item.closest('li')).toHaveClass('px-4 py-2 hover:bg-[rgba(255,255,255,0.4)] text-[white]');
   });
 });

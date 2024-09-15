@@ -1,8 +1,10 @@
 'use client';
 
+import { ReactNode } from 'react';
+import Image from 'next/image';
 import { useRouter, usePathname } from '@/navigation';
 import { Locale, localeNames, locales } from '@/i18n.config';
-import { Dropdown, DropdownItem } from './Dropdown';
+import { Dropdown } from './Dropdown';
 
 interface LanguageChangerProps {
   locale: Locale;
@@ -10,7 +12,23 @@ interface LanguageChangerProps {
   closeMenu: () => void;
 }
 
-export const LanguageChanger = ({ locale, className, closeMenu }: LanguageChangerProps): React.ReactNode => {
+const items = locales.map((localeItem) => ({
+  key: localeItem,
+  value: (
+    <div className="flex items-center gap-2">
+      <Image
+        src={`/flag-${localeItem}.svg`}
+        alt={`${localeNames[localeItem]} flag`}
+        className="w-5 h-5"
+        width={20}
+        height={20}
+      />
+      <span>{localeNames[localeItem]}</span>
+    </div>
+  ),
+}));
+
+export const LanguageChanger = ({ locale, className, closeMenu }: LanguageChangerProps): ReactNode => {
   const router = useRouter();
   const pathname = usePathname();
 
@@ -21,13 +39,10 @@ export const LanguageChanger = ({ locale, className, closeMenu }: LanguageChange
 
   return (
     <Dropdown
-      initialValue={localeNames[locale]}
-      currentLanguage={localeNames[locale]}
+      items={items}
+      initialKey={locale}
+      onItemSelect={(key) => handleChange(key)}
       className={`capitalize ${className ?? ''}`}
-    >
-      {locales.map((localeItem) => (
-        <DropdownItem key={localeItem} label={localeNames[localeItem]} onClick={() => handleChange(localeItem)} />
-      ))}
-    </Dropdown>
+    />
   );
 };

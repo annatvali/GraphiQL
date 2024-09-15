@@ -87,6 +87,9 @@
       "bio": "Hi! I am a beginner front-end developer with a keen interest in building engaging and user-friendly web applications. I&apos;m excited to apply my skills to real-world projects, collaborate with others and take on new challenges in the field. I&apos;m grateful for the opportunity to learn from RS School, which has given me a strong foundation in HTML, CSS, and JavaScript!"
     }
   },
+  "COMPONENTS": {
+    "dropdown-empty-label": "Select an option"
+  },
   "VALIDATION": {
     "user-name-min-length": "UserName must be at least 3 characters long.",
     "email-invalid": "Please enter a valid email.",
