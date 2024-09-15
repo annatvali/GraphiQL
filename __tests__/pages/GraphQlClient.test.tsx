@@ -5,7 +5,7 @@ import { useAuth } from '@/app/hooks';
 import { signIn, signUp, signOut } from '@/lib/firebase/client/auth';
 import { useRouter } from '@/navigation';
 import { PATH } from '@/constants';
-import GraphQLClientPage from '@/app/[locale]/graphql-client/page';
+import GraphQLClientPage from '@/app/[locale]/graphql/page';
 
 vi.mock('@/lib/firebase/client/auth', async () => {
   const original = await vi.importActual('@/lib/firebase/client/auth');

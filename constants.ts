@@ -1,14 +1,20 @@
+export const HTTP_METHODS = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS', 'HEAD'] as const;
+
+export const GRAPHQL_METHOD = ['GRAPHQL'] as const;
+
 export const PATH = {
   MAIN: '/',
   LOGIN: '/login',
   REGISTER: '/register',
-  RESTFUL_CLIENT: '/restful-client',
-  GRAPHQL_CLIENT: '/graphql-client',
+  RESTFUL_CLIENT: `/${HTTP_METHODS[0]}`,
+  GRAPHQL_CLIENT: `/${GRAPHQL_METHOD[0]}`,
   HISTORY: '/history',
 };
 
+const ALL_RESTFUL_CLIENT_PATHS = HTTP_METHODS.map((method) => `/${method}`);
+
 export const ROUTES = {
-  PROTECTED: [PATH.RESTFUL_CLIENT, PATH.GRAPHQL_CLIENT, PATH.HISTORY],
+  PROTECTED: [...ALL_RESTFUL_CLIENT_PATHS, PATH.GRAPHQL_CLIENT, PATH.HISTORY],
   UNAUTHENTICATED: [PATH.LOGIN, PATH.REGISTER],
 };
 

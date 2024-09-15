@@ -12,14 +12,16 @@ export const authMiddleware = async (request: NextRequest) => {
   const pathname = url.pathname;
 
   const pathWithoutLocale = pathname.replace(localePrefixRegex, '/');
+  const parts = pathWithoutLocale.split('/');
+  const pathBasePart = parts[1];
 
-  if (pathWithoutLocale === PATH.MAIN) {
+  if (pathBasePart === PATH.MAIN) {
     return;
   }
 
   const sessionCookie = request.cookies.get(SESSION_COOKIE.NAME);
 
-  if (!sessionCookie && ROUTES.PROTECTED.includes(pathWithoutLocale)) {
+  if (!sessionCookie && ROUTES.PROTECTED.includes(pathBasePart)) {
     url.pathname = PATH.MAIN;
     return NextResponse.redirect(url);
   }
@@ -43,8 +45,8 @@ export const authMiddleware = async (request: NextRequest) => {
   const isAuthenticated = data?.isLoggedIn ?? false;
 
   if (
-    (!isAuthenticated && ROUTES.PROTECTED.includes(pathWithoutLocale)) ||
-    (isAuthenticated && ROUTES.UNAUTHENTICATED.includes(pathWithoutLocale))
+    (!isAuthenticated && ROUTES.PROTECTED.includes(pathBasePart)) ||
+    (isAuthenticated && ROUTES.UNAUTHENTICATED.includes(pathBasePart))
   ) {
     url.pathname = PATH.MAIN;
     return NextResponse.redirect(url);
