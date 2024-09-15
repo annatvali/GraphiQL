@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import { useContext } from 'react';
+import { onIdTokenChanged } from 'firebase/auth';
 import { AuthContextProvider, AuthContext } from '@/app/context/AuthContext';
 
 vi.mock('firebase/auth', async () => {
@@ -33,7 +34,7 @@ vi.mock('@/lib/firebase/client/auth', async () => {
 });
 
 vi.mock('@/lib/firebase/client/config', () => ({
-  firebaseClientAuth: {},
+  firebaseClientAuth: vi.fn(),
 }));
 
 vi.mock('@/lib/firebase/client', () => {
@@ -48,12 +49,23 @@ vi.mock('@/lib/firebase/client', () => {
 vi.useFakeTimers();
 
 const AuthConsumer = () => {
-  const { user } = useContext(AuthContext)!;
-  return <div>User email: {user?.email}</div>;
+  const { user, setUser } = useContext(AuthContext)!;
+  return (
+    <>
+      <div>User email: {user?.email}</div>
+      <button
+        onClick={() => {
+          setUser(null);
+        }}
+      >
+        Sign Out
+      </button>
+    </>
+  );
 };
 
 describe('AuthContextProvider', () => {
-  it('provides the initial user state', () => {
+  it('should initialize with the provided user state', () => {
     const mockUser = { uid: '123', email: 'test@test.com', userName: 'Test User' };
 
     render(
@@ -63,5 +75,20 @@ describe('AuthContextProvider', () => {
     );
 
     expect(screen.getByText(/User email: test@test.com/i)).toBeInTheDocument();
+  });
+
+  it('should unsubscribe from onIdTokenChanged on unmount', () => {
+    const unsubscribe = vi.fn();
+    vi.mocked(onIdTokenChanged).mockImplementation(() => unsubscribe);
+
+    const { unmount } = render(
+      <AuthContextProvider>
+        <div>Test</div>
+      </AuthContextProvider>
+    );
+
+    unmount();
+
+    expect(unsubscribe).toHaveBeenCalled();
   });
 });
