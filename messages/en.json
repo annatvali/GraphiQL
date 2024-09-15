@@ -1,4 +1,8 @@
 {
+  "METADATA": {
+    "title": "RESTful/GraphQL Client",
+    "description": "A lightweight REST/GraphQL client for seamless API interactions"
+  },
   "HEADER": {
     "signin": "Sign In",
     "signup": "Sign Up",
@@ -61,6 +65,10 @@
     "title": "404 - Not Found",
     "message": "Sorry, we couldn`t find the page you were looking for.",
     "link_to_main": "Go to main page"
+  },
+  "ERROR_PAGE": {
+    "title": "Something went wrong!",
+    "button_refresh": "Try again"
   },
   "TEAM": {
     "valeriya": {

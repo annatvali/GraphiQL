@@ -1,4 +1,8 @@
 {
+  "METADATA": {
+    "title": "RESTful/GraphQL Клиент",
+    "description": "Легкий REST/GraphQL-клиент для взаимодействия с API"
+  },
   "HEADER": {
     "signin": "Войти",
     "signup": "Зарегистрироваться",
@@ -61,6 +65,10 @@
     "title": "404 - Странице не найдена",
     "message": "Простите, мы не смогли найти данную страницу.",
     "link_to_main": "На главную страницу"
+  },
+  "ERROR_PAGE": {
+    "title": "Что-то пошло не так!",
+    "button_refresh": "Попробовать снова"
   },
   "TEAM": {
     "valeriya": {
