@@ -1,25 +1,30 @@
 import React from 'react';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/navigation';
+import { useAuth } from '@/app/hooks';
+import { PATH } from '@/constants';
 
 const AuthenticatedPage: React.FC = () => {
   const t = useTranslations('MAIN_AUTH');
 
-  const username = 'User';
+  const { user } = useAuth();
+
+  const userName = user?.userName ?? '';
+
   const style =
     'bg-white/30 hover:bg-white/40 active:shadow-none text-[white] shadow-custom-light font-light text-xl p-2.5 rounded-[20px]';
 
   return (
     <section className="flex flex-col min-h-600 mt-10 bg-[url('../public/booble.png')] bg-no-repeat bg-bottom bg-contain sm-max:bg-[url('../public/booble-adapt.png')]">
-      <h1 className="color-white text-6xl font-medium">{`${t('greeting')}${username}!`}</h1>
+      <h1 className="color-white text-6xl font-medium">{t('greeting', { userName })}</h1>
       <div className="flex gap-4 my-8">
-        <Link className={style} href="/rest-client">
-          {t('restfull_link')}
+        <Link className={style} href={PATH.RESTFUL_CLIENT}>
+          {t('restful_link')}
         </Link>
-        <Link className={style} href="/graphiql-client">
-          {t('graphiql_link')}
+        <Link className={style} href={PATH.GRAPHQL_CLIENT}>
+          {t('graphql_link')}
         </Link>
-        <Link className={style} href="/history">
+        <Link className={style} href={PATH.HISTORY}>
           {t('history_link')}
         </Link>
       </div>

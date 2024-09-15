@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const useStickyHeader = (): boolean => {
+export const useStickyHeader = (): boolean => {
   const [isSticky, setIsSticky] = useState(false);
 
   const handleScroll = (): void => {
@@ -20,5 +20,3 @@ const useStickyHeader = (): boolean => {
 
   return isSticky;
 };
-
-export default useStickyHeader;

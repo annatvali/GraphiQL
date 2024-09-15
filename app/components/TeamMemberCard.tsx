@@ -13,11 +13,14 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({ member }) => {
   const { id, photo } = member;
 
   return (
-    <li className="flex flex-col items-center w-320">
-      <div className="p-3 bg-white">
+    <li className="flex flex-col items-center w-320" data-testid="team-member-card">
+      <div className="p-3 bg-white" data-testid="image-container">
         <Image src={photo} width={300} height={100} alt={t(`${id}.name`)} />
       </div>
-      <div className="bg-white -mt-8 w-275 text-custom-purple text-center font-semibold p-3">
+      <div
+        className="bg-white -mt-8 w-275 text-custom-purple text-center font-semibold p-3"
+        data-testid="text-container"
+      >
         <h3 className="text-[35px] font-semibold">{t(`${id}.name`)}</h3>
         <p className="my-5 text-custom-light-gray">{t(`${id}.role`)}</p>
         <p>{t(`${id}.bio`)}</p>

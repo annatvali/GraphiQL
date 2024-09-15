@@ -14,6 +14,7 @@ const BurgerMenu: React.FC<BurgerMenuProps> = ({ isMenuOpen, closeMenu }) => {
         'pointer-events-auto opacity-100': isMenuOpen,
         'pointer-events-none opacity-0': !isMenuOpen,
       })}
+      data-testid="backdrop"
       onClick={closeMenu}
     >
       <div
@@ -24,6 +25,7 @@ const BurgerMenu: React.FC<BurgerMenuProps> = ({ isMenuOpen, closeMenu }) => {
             'translate-x-full transform': !isMenuOpen,
           }
         )}
+        data-testid="menu-container"
         onClick={(e) => e.stopPropagation()}
       >
         <nav className="mt-16 flex flex-col space-y-4">
