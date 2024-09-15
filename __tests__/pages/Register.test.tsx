@@ -1,7 +1,7 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { beforeAll, describe, it, expect, vi } from 'vitest';
-import { NextIntlClientProvider } from 'next-intl';
+import { describe, it, expect, vi } from 'vitest';
+import { renderWithTranslations } from '@/__tests__/test-utils';
 import { useRouter } from '@/navigation';
 import { useAuth } from '@/app/hooks';
 import { signIn, signUp, signOut } from '@/lib/firebase/client/auth';
@@ -64,62 +64,36 @@ vi.mock('@/navigation', async () => {
   };
 });
 
-let mockMessages: IntlMessages;
-const locale = 'en';
-
-beforeAll(async () => {
-  const messages = (await import('@/messages/en.json')).default;
-
-  const { SIGN_UP, VALIDATION, ERRORS } = messages;
-
-  const mockSignUpTranslations = {
-    SIGN_UP: {
-      ...SIGN_UP,
-      title: 'Sign Up',
-      signup_btn: 'Sign Up',
-      signin_link: 'Sign In',
-      descr: 'Already have an account?',
-      username_label: 'Username',
-      email_label: 'Email',
-      psw_label: 'Password',
-      confirm_psw_label: 'Confirm Password',
-    },
-  };
-
-  const mockValidationTranslations = {
-    VALIDATION: {
-      ...VALIDATION,
-      'user-name-min-length': 'Username is too short',
-      'email-invalid': 'Invalid email address',
-      'password-min-length': 'Password is too short',
-      'confirm-password-match': 'Passwords do not match',
-    },
-  };
-
-  const mockErrorTranslations = {
-    ERRORS: {
-      ...ERRORS,
-      'auth/email-already-exists': 'This email is already in use',
-    },
-  };
-
-  mockMessages = {
-    ...messages,
-    ...mockSignUpTranslations,
-    ...mockValidationTranslations,
-    ...mockErrorTranslations,
-  };
-});
+const mockMessages = {
+  SIGN_UP: {
+    title: 'Sign Up',
+    signup_btn: 'Sign Up',
+    signin_link: 'Sign In',
+    descr: 'Already have an account?',
+    username_label: 'Username',
+    email_label: 'Email',
+    psw_label: 'Password',
+    confirm_psw_label: 'Confirm Password',
+  },
+  VALIDATION: {
+    'user-name-min-length': 'Username is too short',
+    'email-invalid': 'Invalid email address',
+    'password-min-length': 'Password is too short',
+    'passwords-must-match': 'Passwords do not match',
+    'password-must-contain-letter': 'Contain at least one letter.',
+    'password-must-contain-digit': 'Contain at least one digit.',
+    'password-must-contain-special': 'Contain at least one special character.',
+  },
+  ERRORS: {
+    'auth/email-already-exists': 'This email is already in use',
+  },
+};
 
 describe('Register', () => {
   it('renders form with fields and translations when not logged in', () => {
     vi.mocked(useAuth).mockReturnValue({ user: null, setUser: vi.fn(), signIn, signUp, signOut });
 
-    render(
-      <NextIntlClientProvider locale={locale} messages={mockMessages}>
-        <Register />
-      </NextIntlClientProvider>
-    );
+    renderWithTranslations(<Register />, { messages: mockMessages });
 
     expect(screen.getByLabelText(/Username/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/Email/i)).toBeInTheDocument();
@@ -133,11 +107,7 @@ describe('Register', () => {
   it('displays validation errors', async () => {
     const user = userEvent.setup();
 
-    render(
-      <NextIntlClientProvider locale={locale} messages={mockMessages}>
-        <Register />
-      </NextIntlClientProvider>
-    );
+    renderWithTranslations(<Register />, { messages: mockMessages });
 
     const usernameInput = screen.getByLabelText(/Username/i);
     const emailInput = screen.getByLabelText(/Email/i);
@@ -162,11 +132,7 @@ describe('Register', () => {
   });
 
   it('submits form and redirects on successful submission', async () => {
-    render(
-      <NextIntlClientProvider locale={locale} messages={mockMessages}>
-        <Register />
-      </NextIntlClientProvider>
-    );
+    renderWithTranslations(<Register />, { messages: mockMessages });
 
     const signUpMock = useAuth().signUp;
     const pushMock = useRouter().push;
@@ -212,11 +178,7 @@ describe('Register', () => {
 
     const replaceMock = useRouter().replace;
 
-    render(
-      <NextIntlClientProvider locale={locale} messages={mockMessages}>
-        <Register />
-      </NextIntlClientProvider>
-    );
+    renderWithTranslations(<Register />, { messages: mockMessages });
 
     expect(replaceMock).toHaveBeenCalledWith(PATH.MAIN);
   });
@@ -238,11 +200,7 @@ describe('Register', () => {
 
     const user = userEvent.setup();
 
-    render(
-      <NextIntlClientProvider locale={locale} messages={mockMessages}>
-        <Register />
-      </NextIntlClientProvider>
-    );
+    renderWithTranslations(<Register />, { messages: mockMessages });
 
     const usernameInput = await screen.findByLabelText(/Username/i);
     const emailInput = screen.getByLabelText(/Email/i);

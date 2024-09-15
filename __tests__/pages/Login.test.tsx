@@ -1,7 +1,7 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { beforeAll, describe, it, expect, vi } from 'vitest';
-import { NextIntlClientProvider } from 'next-intl';
+import { describe, it, expect, vi } from 'vitest';
+import { renderWithTranslations } from '@/__tests__/test-utils';
 import { useRouter } from '@/navigation';
 import { useAuth } from '@/app/hooks';
 import { signIn, signUp, signOut } from '@/lib/firebase/client/auth';
@@ -65,58 +65,33 @@ vi.mock('firebase/auth', async () => {
   };
 });
 
-let mockMessages: IntlMessages;
-const locale = 'en';
-
-beforeAll(async () => {
-  const messages = (await import('@/messages/en.json')).default;
-
-  const { SIGN_IN, VALIDATION, ERRORS } = messages;
-
-  const mockSignInTranslations = {
-    SIGN_IN: {
-      ...SIGN_IN,
-      title: 'Sign In',
-      signin_btn: 'Sign In',
-      signup_link: 'Create an account',
-      descr: 'Don’t have an account?',
-      email_label: 'Email',
-      psw_label: 'Password',
-    },
-  };
-
-  const mockValidationTranslations = {
-    VALIDATION: {
-      ...VALIDATION,
-      'email-invalid': 'Invalid email address',
-      'password-min-length': 'Password is too short',
-    },
-  };
-
-  const mockErrorTranslations = {
-    ERRORS: {
-      ...ERRORS,
-      'auth/invalid-credential': 'Your credentials are invalid or expired',
-    },
-  };
-
-  mockMessages = {
-    ...messages,
-    ...mockSignInTranslations,
-    ...mockValidationTranslations,
-    ...mockErrorTranslations,
-  };
-});
+const mockMessages = {
+  SIGN_IN: {
+    title: 'Sign In',
+    signin_btn: 'Sign In',
+    signup_link: 'Create an account',
+    descr: 'Don’t have an account?',
+    email_label: 'Email',
+    psw_label: 'Password',
+  },
+  VALIDATION: {
+    'email-invalid': 'Invalid email address',
+    'password-min-length': 'Password is too short',
+    'passwords-must-match': 'Passwords do not match',
+    'password-must-contain-letter': 'Contain at least one letter.',
+    'password-must-contain-digit': 'Contain at least one digit.',
+    'password-must-contain-special': 'Contain at least one special character.',
+  },
+  ERRORS: {
+    'auth/invalid-credential': 'Your credentials are invalid or expired',
+  },
+};
 
 describe('Login', () => {
   it('renders form with fields and translations when not logged in', () => {
     vi.mocked(useAuth).mockReturnValue({ user: null, setUser: vi.fn(), signIn, signUp, signOut });
 
-    render(
-      <NextIntlClientProvider locale={locale} messages={mockMessages}>
-        <Login />
-      </NextIntlClientProvider>
-    );
+    renderWithTranslations(<Login />, { messages: mockMessages });
 
     expect(screen.getByLabelText(/Email/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/Password/i)).toBeInTheDocument();
@@ -128,11 +103,7 @@ describe('Login', () => {
   it('displays validation errors', async () => {
     const user = userEvent.setup();
 
-    render(
-      <NextIntlClientProvider locale={locale} messages={mockMessages}>
-        <Login />
-      </NextIntlClientProvider>
-    );
+    renderWithTranslations(<Login />, { messages: mockMessages });
 
     const emailInput = screen.getByLabelText(/Email/i);
     const passwordInput = screen.getByLabelText(/Password/i);
@@ -146,11 +117,7 @@ describe('Login', () => {
   });
 
   it('submits form and redirects', async () => {
-    render(
-      <NextIntlClientProvider locale={locale} messages={mockMessages}>
-        <Login />
-      </NextIntlClientProvider>
-    );
+    renderWithTranslations(<Login />, { messages: mockMessages });
 
     const signInMock = useAuth().signIn;
     const pushMock = useRouter().push;
@@ -191,11 +158,7 @@ describe('Login', () => {
 
     const replaceMock = useRouter().replace;
 
-    render(
-      <NextIntlClientProvider locale={locale} messages={mockMessages}>
-        <Login />
-      </NextIntlClientProvider>
-    );
+    renderWithTranslations(<Login />, { messages: mockMessages });
 
     expect(replaceMock).toHaveBeenCalledWith(PATH.MAIN);
   });
@@ -221,11 +184,7 @@ describe('Login', () => {
 
     const user = userEvent.setup();
 
-    render(
-      <NextIntlClientProvider locale={locale} messages={mockMessages}>
-        <Login />
-      </NextIntlClientProvider>
-    );
+    renderWithTranslations(<Login />, { messages: mockMessages });
 
     const emailInput = screen.getByLabelText(/Email/i);
     const passwordInput = screen.getByLabelText(/Password/i);
