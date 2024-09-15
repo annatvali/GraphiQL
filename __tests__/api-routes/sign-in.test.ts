@@ -3,7 +3,7 @@ import { NextRequest } from 'next/server';
 import { setSessionCookie } from '@/lib/cookies';
 import { createSessionCookie, getCurrentUser } from '@/lib/firebase/server';
 import { APP_ERROR_CODE, SESSION_COOKIE } from '@/constants';
-import { parseBearerToken } from '@/app/api/auth/sign-in/parseBearerToken';
+import { parseBearerToken } from '@/lib/firebase/server/parseBearerToken';
 import { POST } from '@/app/api/auth/sign-in/route';
 
 vi.mock('@/lib/cookies', () => ({
@@ -15,7 +15,7 @@ vi.mock('@/lib/firebase/server', () => ({
   getCurrentUser: vi.fn(),
 }));
 
-vi.mock('@/app/api/auth/sign-in/parseBearerToken', () => ({
+vi.mock('@/lib/firebase/server/parseBearerToken', () => ({
   parseBearerToken: vi.fn(),
 }));
 

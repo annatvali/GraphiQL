@@ -4,7 +4,7 @@ import { setSessionCookie } from '@/lib/cookies';
 import { createSessionCookie, getCurrentUser } from '@/lib/firebase/server';
 import { isAppError } from '@/utils/guards';
 import { APP_ERROR_CODE, HTTP_STATUS_CODE, SESSION_COOKIE } from '@/constants';
-import { parseBearerToken } from './parseBearerToken';
+import { parseBearerToken } from '@/lib/firebase/server/parseBearerToken';
 
 export const POST = async (request: NextRequest): Promise<NextResponse<SignInResponse>> => {
   try {

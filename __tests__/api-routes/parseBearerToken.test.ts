@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { parseBearerToken } from '@/app/api/auth/sign-in/parseBearerToken';
+import { parseBearerToken } from '@/lib/firebase/server/parseBearerToken';
 
 test('parseBearerToken parses a valid Bearer token', () => {
   const result = parseBearerToken('Bearer abc123');
